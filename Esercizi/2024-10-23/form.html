@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+
+    <style>
+        html,
+        body {
+            margin: 10px;
+            padding: 10px;
+            font-size: 24px;
+            background-color: whitesmoke;
+        }
+
+        input {
+            padding: 10px;
+            background-color: lightgreen;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <p>Serve a illustrare come, qualuque sia, <code>GET</code> o <code>POST</code> il metodo della richiesta HTTP, il
+        server risponderà comunque con il file richiesto.</p>
+
+    <br><br>
+
+    <form action="hello.html" method="get">
+        Invia <code>&nbsp; GET /hello.html</code> al server: &ensp; <input type="submit" value="GET">
+    </form>
+
+    <br><br>
+
+    <form action="hello.html" method="get">
+        Invia <code>&nbsp; POST /hello.html</code> al server: &ensp; <input type="submit" value="POST">
+    </form>
+
+</body>
+
+</html>
