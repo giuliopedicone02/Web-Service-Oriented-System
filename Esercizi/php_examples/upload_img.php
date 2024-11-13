@@ -1,24 +1,35 @@
 <?php
 
+if (($err = error_get_last()) != null) {
+    // si attiva, p.es., se file inviato eccede max POST size
+    echo "<h3>$err[message]</h3>";
+    echo "<h1>Esco</h1>";
+    exit;
+}
+
 // quando il browser sottomette form per upload di un file, il superglobal
 // $_FILES viene popolato con info sul file da caricare
 
 print('<pre>$_FILES = ' . print_r($_FILES, true) . "</pre>\n");
 print('<pre>$_POST = ' . print_r($_POST, true) . "</pre>\n");
 
-echo "Normalmente non si farebbe il dump dei superglobal, ";
-echo "qui sopra lo si fa a scopo illustrativo<hr>\n";
+echo "Normalmente non si farebbe il dump dei superglobal ";
+echo "sopra, qui lo si fa a scopo illustrativo<hr>\n";
 
 foreach ($_FILES as $file_key => $file_descr) {
-    break;
+    break;   // esci al primo file inviato dal client
 }
+echo "Indice per primo file in upload: <code>\"$file_key\"</code><br>";
 
-echo "Chiave per primo file in upload: <code>\"$file_key\"</code><hr>";
+echo 'NB: <code>$_FILES</code> avrebbe altri indici se il ';
+echo 'cliente inviasse pi&ugrave; file (avendo file chooser multipli) <hr>';
 
-include "upload_err_handle.ppp";
+echo "Dimensione file inviato da client (0 in caso di errore): ";
+echo $file_descr['size'] . "<BR>";
+include "upload_err_handling.php";
 
 if (($errno = $file_descr["error"]) > 0)
-    exit("<h3>$upload_err_msg[$errno]</h3>");
+    exit("<h3>codice $errno ($upload_err_msg[$errno])</h3>");
 
 $target_dir = "_uploads/";
 $basename = $file_descr["name"];
@@ -51,7 +62,7 @@ if (isset($_POST["invia"]))   // scoraggia POST non provenienti dal form
     } else {
         echo "<h3>Sorry: file not an image for <code>getimagesize()</code></h3>";
         echo "Output di <code>getimagesize($temp_loc)</code>: ";
-        print("<pre>" . print_r($check, true) . "</pre>\n");
+        print("<pre>" . print_r($check, true) . "</pre>\n");   // forse non mostra niente!
         $uploadOk = 0;
     }
 }
@@ -79,8 +90,8 @@ if ($uploadOk == 0) {
 // tutto ok, ora si sposta veramente il file
 } else {
     if (move_uploaded_file($temp_loc, $target_file)) {
-        echo "<h3>File " . $temp_loc . " uploaded to $target_file</h3>";
+        echo "<h3>File " . $temp_loc . " uploaded to <code>$target_file</code></h3>";
     } else {
-        echo "<h3>Sorry, error moving uploaded file from temporary location</h3>";
+        echo "<h3>Sorry, error moving uploaded file from temporary location to <code>$target_file</code></h3>";
     }
 }

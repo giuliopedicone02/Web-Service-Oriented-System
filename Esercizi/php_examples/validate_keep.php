@@ -64,6 +64,17 @@ function test_input($data) {
 }
 ?>
 
+<?php
+echo "<h2>Your Input:</h2>";
+echo "Name: $name<BR>";
+echo "Email: $email<BR>";
+echo "Website: $website<BR>";
+echo "Comment: $comment<BR>";
+echo "Gender: $gender<BR>";
+if ($nameErr == "" && $emailErr == "" && $genderErr == "" && $websiteErr == "")
+  $name = $email = $gender = $comment = $website = "";
+?>
+
 <h2>PHP Form Validation Example</h2>
 <p><span class="error">* required field</span></p>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
@@ -86,15 +97,6 @@ function test_input($data) {
   <br><br>
   <input type="submit" name="submit" value="Submit">  
 </form>
-
-<?php
-echo "<h2>Your Input:</h2>";
-echo "Name: $name<BR>";
-echo "Email: $email<BR>";
-echo "Website: $website<BR>";
-echo "Comment: $comment<BR>";
-echo "Gender: $gender<BR>";
-?>
 
 </body>
 </html>
