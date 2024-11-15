@@ -1,0 +1,87 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 CourierNewPSMT;\f2\fswiss\fcharset0 Helvetica-Oblique;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21880\viewh11340\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs32 \cf0 Il database mySql 
+\f1 myDB
+\f0  contiene le tabelle 
+\f1 flist
+\f0  (lista dei film) e 
+\f1 wlist
+\f0  (lista dei film desiderati).\
+Le tabelle sono uguali e hanno i seguenti campi: 
+\f1 titolo VARCHAR(30) NOT NULL 
+\f0 e 
+\f1 regista VARCHAR(30)
+\f0 .\
+\
+Implementare mediante PHP una o pi\'fa  pagine web che presentino:\
+    una sezione con un titolo a caso cercato in 
+\f1 flist
+\f0  scritto sotto:
+\f1 <h1>film consigliato:</h1><br>\
+
+\f0     una sezione con un form con due campi input: 
+\f1 film 
+\f0 e 
+\f1 regista
+\f0  e un pulsante submit che aprir\'e0 la stessa o un\'92altra pagina inviandole i dati del form col metodo 
+\f1 POST
+\f0 .\
+\
+Una volta ricevuti i dati, viene eseguita una query che cerca record di 
+\f1 flist
+\f0  con titolo o regista corrispondenti a quelli inseriti.\
+Se esiste almeno un risultato:\
+    viene stampato sotto la scritta:
+\f1 <h1>film richiesto/i:</h1><br>
+\f0 \
+    viene fornito un link per tornare indietro \
+\
+altrimenti:\
+se il titolo non esiste nella 
+\f1 wlist
+\f0  allora viene chiesto se si vuole aggiungere il film richiesto nella wishlist, mediante un form con due pulsanti submit: 
+\f2\i si
+\f0\i0  e 
+\f2\i no
+\f0\i0 .\
+\
+La pressione di 
+\f2\i si
+\f0\i0  determina l\'92inserimento di titolo e regista nella tabella 
+\f1 wlist
+\f0 , la pressione di 
+\f2\i no
+\f0\i0  reindirizza alla pagina iniziale.\
+\
+Bonus: inserire un link o un pulsante in un form che mostra nella stessa o in una nuova pagina:\
+    la wishlist\
+    un pulsante per svuotarla\
+    un link per tornare indietro\
+\
+Dati per connettersi al database:\
+    $servername = "localhost";\
+    $username = "username";\
+    $password = "password";\
+    $dbname = "myDB";\
+\
+Funzione per numero causale:\
+	rand(int $min, int $max): int\
+\
+Suggerimento: il form con i due pulsanti 
+\f2\i si
+\f0\i0  e 
+\f2\i no
+\f0\i0  dovrebbe anche ritrasmettere il titolo e il regista\
+\
+\
+\
+\
+\
+\
+}
