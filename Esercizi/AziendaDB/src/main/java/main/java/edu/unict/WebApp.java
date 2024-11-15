@@ -33,7 +33,7 @@ public class WebApp extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        out.println("<html><center><h1>Azienda - Melo Fuccio e Sergio Mancini</h1></center><br>");
+        out.println("<html><center><h1>Azienda JDBC</h1></center><br>");
         out.println("<body><h1>Lista dei dipendenti:</h1>");
 
         String query = "SELECT * FROM Dipendenti";
