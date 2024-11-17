@@ -1,4 +1,4 @@
-package film;
+package edu.unict.film;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,19 +14,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/film")
-public class esame extends HttpServlet {
+@WebServlet("/filmVV")
+public class WebApp extends HttpServlet {
 
-    private Connection connection;
+    Connection connection;
+    static final String CONNECTION = "jdbc:mysql://localhost:3306/FilmDatabase?user=root&password=Giulio2002!";
 
     @Override
     public void init() {
-        final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/FilmDatabase";
-        final String username = "root";
-        final String password = "Giulio2002!";
-
         try {
-            connection = DriverManager.getConnection(CONNECTION_STRING, username, password);
+            connection = DriverManager.getConnection(CONNECTION);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,108 +35,102 @@ public class esame extends HttpServlet {
         response.setContentType("text/html");
         out = response.getWriter();
 
-        out.println(("""
-                    <html>
-                        <head>
-                            <title> Catalogo Film </title>
-                        </head>
-                        <body>
-                            <h1> <center> Film Database </center> </h1>
-                """));
-
-        out.println("<h3> Cerca un film </h3>");
-
         out.println("""
-                    <form action="/film" method="post">
-                        <span> Cerca per nome film: </span>
-                        <input type="text" name="nome" placeholder="Nome Film"><br/>
-                        <span> Cerca per nome regista: </span>
-                        <input type="text" name="regista" placeholder="Nome Regista"><br/>
-                        <span> Cerca per anno: </span>
-                        <input type="number" name="anno" placeholder="Anno"><br/>
-                        <input type="submit" name="action" value="Cerca">
-                    </form>
+                            <html>
+                            <head></head>
+                                <body>
+                                    <center><h1>Catalogo Film</h1></center>
                 """);
-
         String query = "SELECT * FROM Film";
 
-        out.println("<h3> Lista Film </h3>");
-
-        try (Statement stmt = connection.createStatement()) {
-            ResultSet result = stmt.executeQuery(query);
-
+        try (Statement stmt = connection.createStatement(); ResultSet result = stmt.executeQuery(query)) {
+            out.println("<h2><b>Lista film disponibili : </b></h2>");
             while (result.next()) {
+                out.println("<b> Nome Film : </b>" + result.getString("nome_film"));
+                out.println("<b> Nome Regista : </b>" + result.getString("nome_regista"));
 
-                int anno = Integer.parseInt(result.getString("anno_uscita"));
+                int ds = result.getInt("anno_uscita");
+                if (ds >= 2008) {
 
-                out.println("<br/>");
-                out.println("<b> Nome Film: </b> " + result.getString("nome_film"));
-                out.println("<b> Nome Regista: </b> " + result.getString("nome_regista"));
-                if (anno >= 2008) {
-                    out.println("<b> Anno di uscita: </b> <span style='color:green'>" + anno + "</span>");
+                    out.println("<b> Anno di Uscita : </b>" + "<span style = 'color:green' >" + ds + " </span>");
+
                 } else {
-                    out.println("<b> Anno di uscita: </b> <span style='color:red'>" + anno + "</span>");
+                    out.println("<b> Anno di Uscita : </b>" + "<span style = 'color:red' >" + ds + " </span>");
+
                 }
+
+                out.println("<br>");
             }
+
+            out.println("""
+                        <h3> Aggiungere un nuovo film </h3>
+                        <form action='/filmVV' method=post>
+                        <input type='text' name='nome_film' placeholder='inserire nominativo film' required>
+                        <input type='text' name='nome_regista' placeholder='inserire nominativo regista' required>
+                        <input type='number' name='anno_uscita' placeholder='inserire anno uscita' required>
+                        <input type='submit' name='richiesta' value="aggiungi">
+                        </form>
+                    """);
+
+            out.println("""
+                        <h3> Ricerca film : </h3>
+                        <form action='/filmVV' method=post>
+                        <input type='text' name='nome_film' placeholder='inserire nominativo film'>
+                        <input type='text' name='nome_regista' placeholder='inserire nominativo regista'>
+                        <input type='number' name='anno_uscita' placeholder='inserire anno uscita'>
+                        <input type='submit' name='richiesta' value="ricerca">
+                        </form>
+                    """);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        out.println("<h3> Aggiungi un nuovo film </h3>");
-
-        out.println("""
-                    <form action="/film" method="post">
-                        <span> Inserisci nome film: </span>
-                        <input type="text" name="nome" placeholder="Nome Film" required><br/>
-                        <span> Inserisci nome regista: </span>
-                        <input type="text" name="regista" placeholder="Nome Regista" required><br/>
-                        <span> Inserisci anno: </span>
-                        <input type="number" name="anno" placeholder="Anno" required><br/>
-                        <input type="submit" name="action" value="Invia">
-                    </form>
-                """);
     }
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out;
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        String richiesta = request.getParameter("action");
+        out = response.getWriter();
 
-        // Create
-        if (richiesta.equals("Invia")) {
+        String richiesta = request.getParameter("richiesta");
+        String query;
 
-            String nome = request.getParameter("nome");
-            String regista = request.getParameter("regista");
-            int anno = Integer.parseInt(request.getParameter("anno"));
+        if (richiesta.equals("aggiungi")) {
+            String nome = request.getParameter("nome_film");
+            String regista = request.getParameter("nome_regista");
+            int anno = Integer.parseInt(request.getParameter("anno_uscita"));
 
-            String query = "INSERT INTO Film(nome_film, nome_regista, anno_uscita) VALUES (?, ?, ?)";
+            query = "INSERT INTO Film (nome_film,nome_regista,anno_uscita) VALUES (?,?,?)";
 
             try (PreparedStatement stmt = connection.prepareStatement(query)) {
+
                 stmt.setString(1, nome);
                 stmt.setString(2, regista);
                 stmt.setInt(3, anno);
+                stmt.executeUpdate();
 
-                int rows = stmt.executeUpdate();
-                out.println("Inserimento riuscito. Righe modificate: " + rows);
+                out.println("""
+                        <br>
+                        Film aggiunto con successo
+                        <a href='/filmVV'>Torna alla home!</a>
+                                """);
             } catch (SQLException e) {
+
                 e.printStackTrace();
             }
-
-            out.println("<br/> <a href='/film'> Torna alla Home </a>");
         }
 
-        if (richiesta.equals("Cerca")) {
-
-            String nome = request.getParameter("nome");
-            String regista = request.getParameter("regista");
-            String anno_uscita = request.getParameter("anno");
-
+        if (richiesta.equals("ricerca")) {
+            String nome = request.getParameter("nome_film");
+            String regista = request.getParameter("nome_regista");
+            String anno_uscita = request.getParameter("anno_uscita");
             int anno = 0;
             if (!anno_uscita.equals("")) {
                 anno = Integer.parseInt(anno_uscita);
             }
 
-            String query = "SELECT * FROM Film";
+            query = "SELECT * FROM Film";
             boolean condizione = false;
 
             if (!nome.equals("")) {
@@ -176,73 +167,65 @@ public class esame extends HttpServlet {
 
                 out.println("<h2>Lista film disponibili:</h2>");
                 boolean entra = false;
-
                 while (result.next()) {
                     String nomeFilm = result.getString("nome_film");
                     String nomeRegista = result.getString("nome_regista");
                     int annoUscita = result.getInt("anno_uscita");
                     int id = result.getInt("id");
-
-                    out.println("<form  action='/film' method='post' >");
+                    out.print("<form  action='/filmVV' method='post' >");
                     out.println("Nome Film: " + nomeFilm + "<br>");
                     out.println("Nome Regista: " + nomeRegista + "<br>");
                     out.println("Anno di Uscita: " + annoUscita + "<br>");
                     out.println("<input type='hidden' name='id' value='" + id + "' >");
-
-                    out.println("<input type='submit' name='action' value='Modifica'>");
-                    out.println("<input type='submit' name='action' value='Elimina'><br>");
+                    out.println("<input type='submit' name= 'richiesta'value='modifica'>");
+                    out.println("<input type='submit' name='richiesta'value='elimina'>  <br>");
                     out.print("</form>");
                     out.println("<br>");
-
                     entra = true;
                 }
 
                 if (!entra) {
                     out.println("Non ci sono film con questi parametri! <br>");
                 }
-
-                out.println("<a href='/film'>Torna alla home!</a>");
+                out.println("<a href='/filmVV'>Torna alla home!</a>");
 
             } catch (SQLException e) {
 
                 e.printStackTrace();
             }
-
         }
 
-        // Delete
-        if (richiesta.equals("Elimina")) {
+        if (richiesta.equals("elimina")) {
             String idE = request.getParameter("id");
 
             String queryE = "DELETE FROM Film WHERE id = ?";
 
-            try (PreparedStatement stmt = connection.prepareStatement(queryE)) {
-                stmt.setString(1, idE);
-                int rows = stmt.executeUpdate();
+            try (
+                    PreparedStatement stmt = connection.prepareStatement(queryE)) {
 
-                out.write("FILM ELIMINATO CON SUCCESSO. Righe modificate: " + rows);
+                stmt.setString(1, idE);
+                stmt.executeUpdate();
+                out.write("FILM ELIMINATO CON SUCCESSO ");
 
             } catch (SQLException e) {
-                out.write("Errore durante l'elimiazione del film");
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-            out.println("<br/> <a href='/film'>Torna alla home!</a>");
+            out.println("<a href='/filmVV'>Torna alla home!</a>");
 
         }
 
-        // Update
-        if (richiesta.equals("Modifica")) {
+        if (richiesta.equals("modifica")) {
             int id = Integer.parseInt(request.getParameter("id"));
 
-            String query = "SELECT * FROM Film WHERE id = ?";
-
-            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            String query2 = "SELECT * FROM Film WHERE id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(query2)) {
                 stmt.setInt(1, id);
                 ResultSet result = stmt.executeQuery();
 
                 if (result.next()) {
-                    out.println("<form action='/film' method='post'>");
+                    out.println("<form action='/filmVV' method='post'>");
 
                     out.println("<input type='hidden' name = 'id' value='" + id + "'>");
 
@@ -253,11 +236,12 @@ public class esame extends HttpServlet {
                             "<input type='text' name='regista' value='" + result.getString("nome_regista") + "'><br/>");
                     out.println("<span> Modifica anno: </span>");
                     out.println("<input type='number' name='anno' value='" + result.getInt("anno_uscita") + "'><br/>");
-                    out.println("<input type='submit' name='action' value='Update'><br/>");
+                    out.println("<input type='submit' name='richiesta' value='Update'><br/>");
                     out.println("</form>");
                 }
 
             } catch (SQLException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -268,9 +252,9 @@ public class esame extends HttpServlet {
             int anno = Integer.parseInt(request.getParameter("anno"));
             int id = Integer.parseInt(request.getParameter("id"));
 
-            String query = "UPDATE Film SET nome_film=?, nome_regista=?, anno_uscita=? WHERE id = ?";
+            String query2 = "UPDATE Film SET nome_film=?, nome_regista=?, anno_uscita=? WHERE id = ?";
 
-            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            try (PreparedStatement stmt = connection.prepareStatement(query2)) {
                 stmt.setString(1, nome_film);
                 stmt.setString(2, nome_regista);
                 stmt.setInt(3, anno);
@@ -283,16 +267,10 @@ public class esame extends HttpServlet {
                 e.printStackTrace();
             }
 
-            out.println("<a href='/film'>Torna alla home!</a>");
+            out.println("<a href='/filmVV'>Torna alla home!</a>");
+
         }
+
     }
 
-    @Override
-    public void destroy() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
