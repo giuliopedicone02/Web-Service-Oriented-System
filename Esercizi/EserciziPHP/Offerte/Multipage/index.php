@@ -32,8 +32,17 @@
 
         $result = $connection->query($query);
 
+        $sum = 0;
         while ($row = $result->fetch_assoc()) {
-            print("<tr>");
+
+            if ($row['validity'] == 0 || $row['validity'] == 1) {
+                print("<tr style='background-color: yellow'>");
+            } else if ($row['validity'] < 0) {
+                print("<tr style='background-color: red; color: white'>");
+            } else {
+                print("<tr>");
+            }
+
             print("<td><a href='update.php?id=" . $row['id'] . "'> Modifica </a></td>");
             print("<td><a href='delete.php?id=" . $row['id'] . "'> Elimina </a></td>");
             print("<td>" . $row['description'] . "</td>");
@@ -41,9 +50,15 @@
             print("<td>" . $row['validity'] . "</td>");
             print("<td>" . ($row['purchased'] == 1 ? "Si" : "No") . "</td>");
             print("</tr>");
+
+            if ($row['purchased'] == 1) {
+                $sum += $row['price'];
+            }
         }
         ?>
     </table>
+
+    <p> <b>Somma prodotti acquistati: </b> <?= $sum ?>€</p>
 
     <h3>Inserimento Offerte</h3>
 
