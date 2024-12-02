@@ -54,6 +54,8 @@
                 print("<form action='/' method='post'>");
                 print("<td>" . "<input type='submit' name='action' value='Modifica'>" . "</td>");
                 print("<td>" . "<input type='submit' name='action' value='Elimina'>" . "</td>");
+                print("<input type='hidden' name='id' value='" . $row['ID_Auto'] . "'>");
+
                 print("<td>" . $row['Marca'] . "</td>");
                 print("<td>" . $row['Modello'] . "</td>");
                 print("<td>" . $row['Anno'] . "</td>");
@@ -106,6 +108,61 @@
             $prezzo = $_POST['Prezzo'];
 
             $query = "INSERT INTO Auto(Marca,Modello,Anno,Cilindrata,Alimentazione,Prezzo) VALUES ('$marca','$modello','$anno','$cilindrata','$alimentazione','$prezzo')";
+
+            $result = $connection->query($query);
+
+            header("location:index.php");
+        }
+
+        if ($action == "Elimina") {
+            $id = $_POST['id'];
+
+            $query = "DELETE FROM Auto WHERE ID_Auto = " . $id;
+
+            $result = $connection->query($query);
+
+            header("location:index.php");
+        }
+
+
+        if ($action == "Modifica") {
+            $id = $_POST['id'];
+
+            $query = "SELECT * FROM Auto WHERE ID_Auto = " . $id;
+
+            $result = $connection->query($query);
+
+            $row = $result->fetch_assoc();
+
+            print("<h1> <center> Modifica Auto </center> </h1>");
+            print("<form action='/' method='post'>");
+            print("<input type='hidden' name='id' value='" . $row['ID_Auto'] . "'> <br>");
+            print("<span> <b> Modifica Marca: </b></span> ");
+            print("<input type='text' name='marca' value='" . $row['Marca'] . "'> <br>");
+            print("<span> <b> Modifica Modello: </b></span> ");
+            print("<input type='text' name='modello' value='" . $row['Modello'] . "'> <br>");
+            print("<span> <b> Modifica Anno: </b></span> ");
+            print("<input type='number' name='anno' value='" . $row['Anno'] . "'> <br>");
+            print("<span> <b> Modifica Cilindrata: </b></span> ");
+            print("<input type='text' name='cilindrata' value='" . $row['Cilindrata'] . "'> <br>");
+            print("<span> <b> Modifica Alimentazione: </b></span> ");
+            print("<input type='text' name='alimentazione' value='" . $row['Alimentazione'] . "'> <br>");
+            print("<span> <b> Modifica Prezzo: </b></span> ");
+            print("<input type='number' name='prezzo' value='" . $row['Prezzo'] . "'> <br>");
+            print("<input type='submit' name='action' value='Update'>");
+            print("</form>");
+        }
+
+        if ($action == "Update") {
+            $id = $_POST['id'];
+            $marca = $_POST['marca'];
+            $modello = $_POST['modello'];
+            $anno = $_POST['anno'];
+            $cilindrata = $_POST['cilindrata'];
+            $alimentazione = $_POST['alimentazione'];
+            $prezzo = $_POST['prezzo'];
+
+            $query = "UPDATE Auto SET Marca='$marca', Modello='$modello', Anno='$anno', Cilindrata='$cilindrata', Alimentazione='$alimentazione', Prezzo='$prezzo' WHERE ID_Auto = '$id'";
 
             $result = $connection->query($query);
 
