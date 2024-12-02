@@ -60,6 +60,10 @@
 
     <p> <b>Somma prodotti acquistati: </b> <?= $sum ?>€</p>
 
+    <form action="allYouCanBuy.php" method="post">
+        <input type="submit" value="All You Can Buy">
+    </form>
+
     <h3>Inserimento Offerte</h3>
 
     <form action="/create.php" method="post">
