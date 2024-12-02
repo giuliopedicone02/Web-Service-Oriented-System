@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <form action="/update.php" method="post">
         <input type="hidden" name="id" value=<?= $id ?>>
         <span><b>Descrizione: </b></span>
-        <input type="text" name="Descrizione" value=<?= $descrizione ?>><br>
+        <input type="text" name="Descrizione" value="<?= $descrizione ?>"><br>
         <span><b>Prezzo: </b></span>
         <input type="number" name="Prezzo" value=<?= $price ?>><br>
         <span><b>Validità: </b></span>
