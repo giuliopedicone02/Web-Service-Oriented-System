@@ -23,11 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <form action="update.php" method="post">
         <input type="hidden" name="id" value="<?= $id ?>">
         <span>Modifica città: </span>
-        <input type="text" name="nome" value=<?= $nome ?>>
+        <input type="text" name="nome" value="<?= $nome ?>">
         <span>Modifica prezzo: </span>
-        <input type="number" name="prezzo" value=<?= $prezzo ?>>
+        <input type="number" name="prezzo" value="<?= $prezzo ?>">
         <span>Modifica foto: </span>
-        <input type="url" name="foto" value=<?= $foto ?>>
+        <input type="url" name="foto" value="<?= $foto ?>">
         <input type="submit" value="Invia">
     </form>
 <?php
