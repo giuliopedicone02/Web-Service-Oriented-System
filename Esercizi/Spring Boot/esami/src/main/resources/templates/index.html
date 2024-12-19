@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESAMI</title>
+</head>
+<body>
+    <h1><center>ESAMI DB</center></h1>
+
+
+    <h2>LISTA ESAMI</h2>
+    <div  th:each="esami : ${esami}">
+        ID: <span th:text="${esami.id}"></span> - 
+        Nome: <span th:text="${esami.nome}"></span> - 
+        Et&agrave;: <span th:text="${esami.voto}"></span>
+
+</body>
+</html>
