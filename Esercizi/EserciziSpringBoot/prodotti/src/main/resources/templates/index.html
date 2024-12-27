@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>
+        <center>Gestione Prodotti in Spring Boot</center>
+    </h1>
+
+    <h3>
+        Visualizzazione Prodotti
+    </h3>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Prezzo</th>
+            <th colspan="2">Azioni</th>
+        </tr>
+
+        <tr th:each="product:${prodotti}">
+            <td th:text="${product.nome_prodotto}"></td>
+            <td th:text="${product.prezzo_prodotto}"></td>
+            <td>
+                <form action="/modifica" method="post"> <input type="hidden" name="id" th:value="${product.id}">
+                    <button>modifica</button>
+                </form>
+            </td>
+            <td>
+                <form action="/elimina" method="post"> <input type="hidden" name="id" th:value="${product.id}">
+                    <button>elimina</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci un nuovo prodotto:</h3>
+
+    <form action="/create" method="post">
+        <input type="text" placeholder="inserire nome" name="nome_prodotto">
+        <input type="number" placeholder="inserire prezzo" name="prezzo_prodotto">
+        <input type="submit" value="Invia">
+    </form>
+</body>
+
+</html>
