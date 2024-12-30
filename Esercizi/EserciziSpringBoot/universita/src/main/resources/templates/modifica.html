@@ -12,7 +12,7 @@
         <center>Modifica dipartimento</center>
     </h1>
 
-    <form action="/update" method="post" th:object="${dipartimenti}">
+    <form action="/update" method="post">
         <input type="hidden" name="id_dipartimento" th:value="${dipartimenti.id_dipartimento}">
         <span>Nome</span>
         <input type="text" name="nome" th:value="${dipartimenti.nome}">
