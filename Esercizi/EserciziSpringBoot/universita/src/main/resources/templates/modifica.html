@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica dipartimento</center>
+    </h1>
+
+    <form action="/update" method="post" th:object="${dipartimenti}">
+        <input type="hidden" name="id_dipartimento" th:value="${dipartimenti.id_dipartimento}">
+        <span>Nome</span>
+        <input type="text" name="nome" th:value="${dipartimenti.nome}">
+        <span>Edificio</span>
+        <input type="text" name="edificio" th:value="${dipartimenti.edificio}">
+        <span>Telefono</span>
+        <input type="text" name="telefono" th:value="${dipartimenti.telefono}">
+        <input type="submit" value="Invia">
+    </form>
+</body>
+
+</html>

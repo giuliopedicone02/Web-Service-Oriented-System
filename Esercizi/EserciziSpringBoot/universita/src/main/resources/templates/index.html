@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dipartimenti</title>
+</head>
+
+<body>
+    <h1>
+        <center>Dipartimenti in SpringBoot</center>
+    </h1>
+
+    <h3>Lista dei Dipartimenti</h3>
+
+    <table border="1px">
+        <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Edificio</th>
+            <th>Telefono</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="dipartimento:${dipartimenti}">
+            <td th:text="${dipartimento.id_dipartimento}"></td>
+            <td th:text="${dipartimento.nome}"></td>
+            <td th:text="${dipartimento.edificio}"></td>
+            <td th:text="${dipartimento.telefono}"></td>
+            <td>
+                <form action="/modifica" method="post">
+                    <input type="hidden" name="id" th:value="${dipartimento.id_dipartimento}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/elimina" method="post">
+                    <input type="hidden" name="id" th:value="${dipartimento.id_dipartimento}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci un nuovo dipartimento</h3>
+
+    <form action="/create" method="post">
+        <span>Nome</span>
+        <input type="text" name="nome">
+        <span>Edificio</span>
+        <input type="text" name="edificio">
+        <span>Telefono</span>
+        <input type="text" name="telefono">
+        <input type="submit" value="Invia">
+    </form>
+</body>
+
+
+</html>
