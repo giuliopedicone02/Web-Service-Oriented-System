@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>
+        <center>Veicoli in Spring Boot</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Marca</th>
+            <th>Modello</th>
+            <th>Prezzo</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="veicolo:${veicoli}">
+
+            <td th:text="${veicolo.marca}"></td>
+            <td th:text="${veicolo.modello}"></td>
+            <td th:text="${veicolo.prezzo}"></td>
+            <td>
+                <form action="/update" method="post">
+                    <input type="hidden" name="id" th:value="${veicolo.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/delete" method="post">
+                    <input type="hidden" name="id" th:value="${veicolo.id}">
+                    <input type="submit" value="Elimina">
+
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci un nuovo veicolo</h3>
+
+    <form action="/add" method="post">
+        <span>Inserisci marca</span>
+        <input type="text" name="marca">
+        <span>Inserisci modello</span>
+        <input type="text" name="modello">
+        <span>Inserisci prezzo</span>
+        <input type="number" name="prezzo">
+        <input type="submit" value="Invia">
+    </form>
+</body>
+
+</html>
