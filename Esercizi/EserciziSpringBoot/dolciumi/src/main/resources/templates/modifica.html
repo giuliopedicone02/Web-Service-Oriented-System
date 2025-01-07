@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Dolciume</title>
+</head>
+
+<body>
+    <h3>Modifica un nuovo dolciume</h3>
+
+    <form action="/add" method="post" th:object="${dolci}">
+        <input type="hidden" name="id" th:value="${dolci.id}">
+        <span>Inserisci Marca: </span>
+        <input type="text" name="marca" th:value="${dolci.marca}"><br>
+        <span>Inserisci Nome: </span>
+        <input type="text" name="nome" th:value="${dolci.nome}"><br>
+        <span>Inserisci Quantita: </span>
+        <input type="number" name="quantita" th:value="${dolci.quantita}"><br>
+        <input type="submit" value="Invia">
+    </form>
+</body>
+
+</html>

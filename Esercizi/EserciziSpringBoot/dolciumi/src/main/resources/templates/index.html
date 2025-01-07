@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dolciumi</title>
+</head>
+
+<body>
+    <h1>
+        <center>Dolciumi in Spring Boot</center>
+    </h1>
+
+    <h3>Lista Dolciumi</h3>
+
+    <table border="1px">
+        <tr>
+            <th>Marca</th>
+            <th>Nome</th>
+            <th>Quantita</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="dolce : ${dolci}">
+            <td th:text="${dolce.marca}"></td>
+            <td th:text="${dolce.nome}"></td>
+            <td th:text="${dolce.quantita}"></td>
+            <td>
+                <form action="/update" method="post">
+                    <input type="hidden" name="id" th:value="${dolce.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/delete" method="post">
+                    <input type="hidden" name="id" th:value="${dolce.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci un nuovo dolciume</h3>
+
+    <form action="/add" method="post">
+        <span>Inserisci Marca: </span>
+        <input type="text" name="marca"><br>
+        <span>Inserisci Nome: </span>
+        <input type="text" name="nome"><br>
+        <span>Inserisci Quantita: </span>
+        <input type="number" name="quantita" value="0"><br>
+        <input type="submit" value="Invia">
+    </form>
+
+</body>
+
+</html>
