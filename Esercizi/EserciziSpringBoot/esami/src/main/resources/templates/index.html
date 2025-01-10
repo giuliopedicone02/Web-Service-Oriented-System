@@ -1,19 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns="https://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESAMI</title>
+    <title>Esami</title>
 </head>
+
 <body>
-    <h1><center>ESAMI DB</center></h1>
+    <h1>
+        <center>Esami in Spring Boot</center>
+    </h1>
 
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Professore</th>
+            <th>CFU</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="esame : ${esami}">
+            <td th:text="${esame.nome}"></td>
+            <td th:text="${esame.professore}"></td>
+            <td th:text="${esame.cfu}"></td>
+            <td>
+                <form action="/update" method="post">
+                    <input type="hidden" name="id" th:value="${esame.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/delete" method="post">
+                    <input type="hidden" name="id" th:value="${esame.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
 
-    <h2>LISTA ESAMI</h2>
-    <div  th:each="esami : ${esami}">
-        ID: <span th:text="${esami.id}"></span> - 
-        Nome: <span th:text="${esami.nome}"></span> - 
-        Et&agrave;: <span th:text="${esami.voto}"></span>
+    <h3>Inserisci un nuovo esame</h3>
 
+    <form action="/create" method="post">
+        <span>Inserisci nome esame: </span>
+        <input type="text" name="nome"><br>
+        <span>Inserisci nome professore: </span>
+        <input type="text" name="professore"><br>
+        <span>Inserisci CFU: </span>
+        <input type="number" name="cfu"><br>
+        <input type="submit" value="Invia">
+    </form>
 </body>
+
 </html>

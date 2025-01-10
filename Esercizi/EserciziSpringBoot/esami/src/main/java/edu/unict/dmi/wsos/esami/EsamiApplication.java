@@ -1,4 +1,4 @@
-package edu.unict.dmi.esami.esami;
+package edu.unict.dmi.wsos.esami;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

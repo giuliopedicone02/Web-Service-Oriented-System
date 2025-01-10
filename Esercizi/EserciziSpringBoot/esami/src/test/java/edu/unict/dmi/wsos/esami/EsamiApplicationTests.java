@@ -1,4 +1,4 @@
-package edu.unict.dmi.esami.esami;
+package edu.unict.dmi.wsos.esami;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

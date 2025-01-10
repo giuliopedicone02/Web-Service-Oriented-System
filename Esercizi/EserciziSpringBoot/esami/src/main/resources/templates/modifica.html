@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Esame</title>
+</head>
+
+<body>
+    <h3>Modifica esame</h3>
+
+    <form action="/create" method="post" th:object="${esame}">
+        <input type="hidden" name="id" th:value="${esame.id}">
+        <span>Modifica nome esame: </span>
+        <input type="text" name="nome" th:value="${esame.nome}"><br>
+        <span>Modifica nome professore: </span>
+        <input type="text" name="professore" th:value="${esame.professore}"><br>
+        <span>Modifica CFU: </span>
+        <input type="number" name="cfu" th:value="${esame.cfu}"><br>
+        <input type="submit" value="Modifica">
+    </form>
+</body>
+
+</html>
