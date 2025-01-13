@@ -1,0 +1,99 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Langhouses Edit</title>
+<style>
+    /* Global Styles */
+    body {
+        background-color: #f4efe6; /* Parchment background */
+        font-family: "Luminari", "Perpetua", serif; /* Magical font style */
+        color: #3c2f2f; /* Dark brown text */
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 2.5em;
+        color: #4b2c20; /* Darker brown for headers */
+        text-shadow: 2px 2px 5px #9c6644;
+        margin-bottom: 20px;
+    }
+
+    form {
+        background: #fff8dc; /* Light parchment background */
+        padding: 20px;
+        border: 2px solid #4b2c20; /* Dark brown border */
+        border-radius: 8px;
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+        color: #3c2f2f;
+    }
+
+    input[type="text"] {
+        width: calc(100% - 20px);
+        padding: 8px;
+        font-family: "Georgia", serif;
+        border: 1px solid #4b2c20;
+        border-radius: 5px;
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+
+    input[th\:disabled] {
+        background-color: #e0e0e0;
+        cursor: not-allowed;
+    }
+
+    button {
+        background-color: #7b3f00; /* Bronze button background */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        cursor: pointer;
+        font-family: "Luminari", "Perpetua", serif;
+        border-radius: 5px;
+    }
+
+    button:hover {
+        background-color: #5a2c00; /* Darker bronze */
+    }
+
+    a {
+        color: #7b3f00; /* Bronze for links */
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+        font-size: 1em;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    /* Center align the back link */
+    a[th\:href] {
+        text-align: center;
+        display: block;
+        margin: 10px auto;
+    }
+</style>
+</head>
+<body>
+    <form th:action="@{/langhouses}" th:object="${langhouse}" method="post">
+        <input type="text" th:field="*{id}" th:disabled="${id == 0}" th:readonly="${id != 0}"/>
+        <label>Name</label>
+        <input type="text" th:field="*{name}" />
+        <label>Motto</label>
+        <input type="text" th:field="*{motto}" />
+        <button type="submit">Save</button>
+    </form>
+    <a th:href="@{/langhouses}">Back to Langhouses List</a>
+</body>
+</html>

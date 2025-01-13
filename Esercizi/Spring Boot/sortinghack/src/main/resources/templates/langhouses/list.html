@@ -1,0 +1,131 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Langhouses List</title>
+<style>
+     /* Global Styles */
+     body {
+            background-color: #f4efe6; /* Parchment background */
+            font-family: "Luminari", "Perpetua", serif; /* Magical font style */
+            color: #3c2f2f; /* Dark brown text */
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #4b2c20; /* Darker brown for headers */
+            text-shadow: 2px 2px 5px #9c6644;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff8dc; /* Light parchment table background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        th, td {
+            border: 1px solid #4b2c20; /* Dark brown border */
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #e5c299; /* Tan header background */
+            color: #3c2f2f; /* Dark brown text */
+            font-weight: bold;
+        }
+
+        td {
+            font-family: "Georgia", serif;
+        }
+
+        a {
+            color: #7b3f00; /* Bronze for links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            background-color: #7b3f00; /* Bronze button background */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            font-family: "Luminari", "Perpetua", serif;
+        }
+
+        button:hover {
+            background-color: #5a2c00; /* Darker bronze */
+        }
+
+        form input[type="text"] {
+            padding: 5px;
+            border: 1px solid #4b2c20;
+            font-family: "Georgia", serif;
+        }
+
+        form {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        p, div {
+            font-size: 1.2em;
+        }
+
+        p span {
+            font-weight: bold;
+            color: #7b3f00; /* Bronze for counts */
+        }
+
+        /* Footer links */
+        a:last-child {
+            margin-left: 10px;
+        }
+    </style>
+</style>
+</head>
+<body>
+    <h1>Welcome to HogWartSOS</h1>
+    <h2>Langhouses List</h2>
+    <table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Motto</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="langhouse : ${langhouses}">
+        <td th:text="${langhouse.id}"></td>
+        <td th:text="${langhouse.name}"></td>
+        <td th:text="${langhouse.motto}"></td>
+        <td>
+            <a th:href="@{/langhouses/{id}/edit(id=${langhouse.id})}">Edit</a>
+            <a th:href="@{/langhouses/{id}/delete(id=${langhouse.id})}">Delete</a>
+            <a th:href="@{/wizardevs/langhouse/{id}(id=${langhouse.id})}">Filter</a>
+        </td>
+    </tr>
+    </table>
+    
+    <a th:href="@{/langhouses/new}">New Langhouse</a>
+
+    <a th:href="@{/wizardevs}">WizardDevs</a>
+    
+    <a th:href="@{/langhouses}">langhouses</a>
+</body>
+</html>
