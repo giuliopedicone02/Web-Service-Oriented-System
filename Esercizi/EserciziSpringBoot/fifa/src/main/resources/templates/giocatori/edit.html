@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Giocatori</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica/Aggiungi Giocatori</center>
+    </h1>
+
+    <form th:action="@{/giocatori}" th:object="${giocatori}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <span>Nome</span>
+        <input type="text" th:field="*{nome}">
+        <span>Numero Maglia</span>
+        <input type="number" th:field="*{numeroMaglia}">
+        <span>Squadra</span>
+        <select th:field="*{squadraId}">
+            <option th:each="squadra:${squadra}" th:value="${squadra.id}" th:text="${squadra.name}"></option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+    <a th:href="@{/giocatori}">Back to Giocatori List</a>
+</body>
+
+</html>

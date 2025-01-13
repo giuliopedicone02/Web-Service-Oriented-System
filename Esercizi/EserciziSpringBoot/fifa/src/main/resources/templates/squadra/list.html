@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymelaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squadre</title>
+</head>
+
+<body>
+    <h1>
+        <center>
+            Lista Squadre
+        </center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="squadra : ${squadre}">
+            <td th:text="${squadra.name}"></td>
+            <td> <a th:href="@{/squadra/{id}/edit(id=${squadra.id})}">Modifica </a></td>
+            <td> <a th:href="@{/squadra/{id}/delete(id=${squadra.id})}">Elimina </a></td>
+        </tr>
+    </table>
+
+    <h3>Inserisci un nuovo giocatore</h3>
+
+    <a th:href="@{/squadra/new}">Aggiungi una nuova Squadra</a>
+
+    <h3>Visualizza Giocatori</h3>
+
+    <a th:href="@{/giocatori}">Visualizza giocatori</a>
+
+</body>
+
+</html>

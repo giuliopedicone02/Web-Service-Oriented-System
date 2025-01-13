@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Squadra</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica/Aggiungi Squadra</center>
+    </h1>
+
+    <form th:action="@{/squadra}" th:object="${squadre}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <span>Nome</span>
+        <input type="text" th:field="*{name}">
+        <input type="submit" value="Invia">
+    </form>
+
+    <a th:href="@{/squadra}">Back to Squadra List</a>
+</body>
+
+</html>
