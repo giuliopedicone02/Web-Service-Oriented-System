@@ -40,6 +40,13 @@
 
     <a th:href="@{/squadra}">Visualizza squadre</a>
 
+    <h3>Ricerca Giocatore</h3>
+
+    <form th:action="@{/giocatori/search}" method="post">
+        <input type="text" name="search">
+        <input type="submit" value="Filtra">
+    </form>
+
 </body>
 
 </html>

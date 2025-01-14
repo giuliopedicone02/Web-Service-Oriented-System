@@ -6,4 +6,6 @@ import edu.unict.dmi.wsos.fifa.Models.Giocatori;
 
 public interface GiocatoriRepository extends JpaRepository<Giocatori, Long> {
 
+    Object findByNome(String search);
+
 }

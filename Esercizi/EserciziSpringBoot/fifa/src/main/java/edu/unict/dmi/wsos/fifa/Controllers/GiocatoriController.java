@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.unict.dmi.wsos.fifa.Models.Giocatori;
 import edu.unict.dmi.wsos.fifa.Repositories.GiocatoriRepository;
@@ -52,6 +53,13 @@ public class GiocatoriController {
     public String delete(@ModelAttribute Giocatori giocatori, Model model) {
         repoGiocatori.save(giocatori);
         return "redirect:/giocatori";
+    }
+
+    @PostMapping("/giocatori/search")
+    public String cerca(Model model, @RequestParam String search) {
+        model.addAttribute("giocatori", repoGiocatori.findByNome(search));
+        // model.addAttribute("search", search);
+        return "giocatori/list";
     }
 
 }
