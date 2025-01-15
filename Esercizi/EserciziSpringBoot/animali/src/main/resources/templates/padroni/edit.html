@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Padrone</title>
+</head>
+
+<body>
+
+    <h3>
+        Modifica Padrone
+    </h3>
+    <form action="/padroni/new" th:object=${padroni} method="post">
+        <input type="hidden" name="id" th:value="${padroni.id}">
+        <span>Modifica nome</span>
+        <input type="text" name="nome" th:value="${padroni.nome}">
+        <span>Inserisci età</span>
+        <input type="number" name="eta" th:value="${padroni.eta}">
+        <input type="submit" value="Modifica">
+    </form>
+</body>
+
+</html>

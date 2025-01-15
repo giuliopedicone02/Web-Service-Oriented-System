@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Padrone</title>
+</head>
+
+<body>
+
+    <h3>
+        Modifica Animale
+    </h3>
+    <form action="/animali/new" th:object=${animali} method="post">
+        <input type="hidden" name="id" th:value="${animali.id}">
+        <span>Modifica nome</span>
+        <input type="text" name="nome" th:value="${animali.nome}">
+        <span>Modifica età</span>
+        <input type="text" name="eta" th:value="${animali.eta}">
+        <span>Modifica tipo</span>
+        <input type="text" name="tipo" th:value="${animali.tipo}">
+        <span>Modifica Padrone</span>
+        <select name="padroniId">
+            <option th:each="padrone:${padroni}" th:value="${padrone.id}" th:text="${padrone.nome}"></option>
+        </select>
+        <input type="submit" value="Modifica">
+    </form>
+</body>
+
+</html>

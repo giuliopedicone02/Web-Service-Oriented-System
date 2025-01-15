@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padroni</title>
+</head>
+
+<body>
+    <h1>
+        <center>Lista Padroni</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Eta</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="padrone : ${padroni}">
+            <td th:text="${padrone.nome}"></td>
+            <td th:text="${padrone.eta}"></td>
+            <td><a th:href="@{/padroni/{id}/edit(id=${padrone.id})}">Modifica</a></td>
+            <td><a th:href="@{/padroni/{id}/delete(id=${padrone.id})}">Elimina</a></td>
+        </tr>
+    </table>
+
+    <h3>
+        Inserisci un nuovo padrone
+    </h3>
+
+    <form action="padroni/new" method="post">
+        <span>Inserisci nome</span>
+        <input type="text" name="nome">
+        <span>Inserisci età</span>
+        <input type="number" name="eta">
+        <input type="submit" value="Invia">
+    </form>
+
+    <h3>Visualizza Animali</h3>
+
+    <a th:href="@{/animali}">Visualizza Animali</a>
+</body>
+
+</html>

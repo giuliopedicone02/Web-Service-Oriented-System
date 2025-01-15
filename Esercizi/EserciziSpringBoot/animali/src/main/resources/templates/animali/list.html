@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animali</title>
+</head>
+
+<body>
+    <h1>
+        <center>Lista Padroni</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Eta</th>
+            <th>Padrone</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="animale : ${animali}">
+            <td th:text="${animale.nome}"></td>
+            <td th:text="${animale.tipo}"></td>
+            <td th:text="${animale.eta}"></td>
+            <td th:text="${animale.padroniId.nome}"></td>
+            <td><a th:href="@{/animali/{id}/edit(id=${animale.id})}">Modifica</a></td>
+            <td><a th:href="@{/animali/{id}/delete(id=${animale.id})}">Elimina</a></td>
+        </tr>
+    </table>
+
+    <h3>
+        Inserisci un nuovo animale
+    </h3>
+
+    <form action="/animali/new" method="post">
+        <span>Inserisci nome</span>
+        <input type="text" name="nome">
+        <span>Inserisci tipo</span>
+        <input type="text" name="tipo">
+        <span>Inserisci età</span>
+        <input type="number" name="eta">
+        <span>Inserisci Padrone</span>
+        <select name="padroniId">
+            <option th:each="padrone:${padroni}" th:value="${padrone.id}" th:text="${padrone.nome}"></option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+    <h3>Visualizza Padroni</h3>
+
+    <a th:href="@{/padroni}">Visualizza Padroni</a>
+</body>
+
+</html>
