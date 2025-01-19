@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Abbigliamento</title>
+</head>
+
+<body>
+    <h3>Modifica capo di abbigliamento</h3>
+
+    <form action="/abbigliamento/add" th:object="${abbigliamenti}" method="post">
+        <input type="hidden" name="id" th:value="${abbigliamenti.id}">
+        <span>Modifica nome</span>
+        <input type="text" name="name" th:value="${abbigliamenti.name}">
+        <span>Scegli brand</span>
+        <select name="brandId">
+            <option th:each="brand:${brands}" th:value="${brand.id}" th:text="${brand.nome}"></option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+</body>
+
+</html>

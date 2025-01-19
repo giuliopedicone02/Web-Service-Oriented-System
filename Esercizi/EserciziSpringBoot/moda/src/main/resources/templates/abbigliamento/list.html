@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abbigliamento</title>
+</head>
+
+<body>
+    <h1>
+        <center>Lista Capi di Abbigliamento</center>
+    </h1>
+
+    <h3>Lista dei capi di abbigliamento</h3>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Brand</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="abbigliamento:${abbigliamenti}">
+            <td th:text="${abbigliamento.name}"></td>
+            <td th:text="${abbigliamento.brandId.nome}"></td>
+
+            <td>
+                <form action="/abbigliamento/update" method="post">
+                    <input type="hidden" name="id" th:value="${abbigliamento.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/abbigliamento/delete" method="post">
+                    <input type="hidden" name="id" th:value="${abbigliamento.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci un nuovo capo di abbigliamento</h3>
+
+    <form action="/abbigliamento/add" method="post">
+        <span>Inserisci nome</span>
+        <input type="text" name="name">
+        <span>Scegli brand</span>
+        <select name="brandId">
+            <option th:each="brand:${brands}" th:value="${brand.id}" th:text="${brand.nome}"></option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+    <h3>
+        Filtra per Brand
+    </h3>
+
+
+    <form action="/abbigliamento/findByBrand" method="post">
+        <span>Filtra per: </span>
+        <select name="brandId">
+            <option th:each="brand:${brands}" th:value="${brand.id}" th:text="${brand.nome}"></option>
+            <input type="submit" value="Invia">
+        </select>
+    </form>
+
+    <br><br>
+    Vai a: <a href="/brand">Brand</a>
+</body>
+
+</html>
