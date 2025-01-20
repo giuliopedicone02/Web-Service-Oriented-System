@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.unict.moda.Model.Abbigliamento;
 import edu.unict.moda.Model.Brand;
@@ -48,8 +49,9 @@ public class AbbigliamentoController {
     }
 
     @PostMapping("/abbigliamento/findByBrand")
-    public String findByBrand(Model model, Long id) {
-        model.addAttribute("abbigliamenti", abbigliamentoRepository.findByBrandId(id));
+    public String postMethodName(Model model, @RequestParam Long brandId) {
+        Brand brand = brandRepository.getReferenceById(brandId);
+        model.addAttribute("abbigliamenti", abbigliamentoRepository.findByBrandId(brand));
         model.addAttribute("brands", brandRepository.findAll());
         return "abbigliamento/list";
     }
