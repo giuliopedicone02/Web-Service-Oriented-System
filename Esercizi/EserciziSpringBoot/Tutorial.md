@@ -321,4 +321,70 @@ Richiamare `model.addAttribute()` passando la variabile per Thymeleaf (assicurat
  }
 ```
 
-## Fi
+### Filtri
+
+Creiamo un filtro che tramite i model:
+- Abbigliamento
+- Brand
+
+Permetta di visualizzare tutti i capi di abbigliamento di un certo brand.
+
+Per prima cosa, aggiugniamo alla repository Abbigliamento un metodo extra chiamato findByBrandId(Brand brand) che prende come parametro l'oggetto del brand che vogliamo cercare.
+
+```java
+    List<Abbigliamento> findByBrandId(Brand brand);
+```
+
+Aggiugniamo al controller di Abbigliamento un metodo che richiami la funzione appena creata, è importantre cercare prima l'oggetto tramite il getReferenceById() e poi passarlo alla funzione
+
+```java
+ @PostMapping("/abbigliamento/findByBrand")
+    public String postMethodName(Model model, @RequestParam Long brandId) {
+        Brand brand = brandRepository.getReferenceById(brandId);
+        model.addAttribute("abbigliamenti", abbigliamentoRepository.findByBrandId(brand));
+        model.addAttribute("brands", brandRepository.findAll());
+        return "abbigliamento/list";
+    }
+```
+
+Ecco il codice sistemato e ottimizzato per maggiore chiarezza e leggibilità:
+
+---
+
+### Filtri
+
+Creiamo un filtro che, tramite i model:
+- **Abbigliamento**
+- **Brand**
+
+Permetta di visualizzare tutti i capi di abbigliamento di un determinato brand.
+
+1. **Aggiunta del metodo nella repository di Abbigliamento**
+
+Nella repository **Abbigliamento**, aggiungiamo un metodo personalizzato chiamato `findByBrandId(Brand brand)`, che accetta come parametro un oggetto `Brand` per effettuare la ricerca.
+
+```java
+public interface AbbigliamentoRepository extends JpaRepository<Abbigliamento, Long> {
+    List<Abbigliamento> findByBrandId(Brand brand);
+}
+```
+
+2. **Implementazione del metodo nel controller**
+
+Nel controller di **Abbigliamento**, aggiungiamo un metodo che utilizza il metodo appena definito nella repository. È importante cercare l'oggetto **Brand** tramite `getReferenceById()` prima di passarlo alla funzione.
+
+```java
+    @PostMapping("/abbigliamento/findByBrand")
+    public String findByBrand(Model model, @RequestParam Long brandId) {
+        // Recupera l'oggetto Brand tramite il suo ID
+        Brand brand = brandRepository.getReferenceById(brandId);
+
+        // Aggiunge gli elementi filtrati e tutti i brand al model
+        model.addAttribute("abbigliamenti", abbigliamentoRepository.findByBrandId(brand));
+        model.addAttribute("brands", brandRepository.findAll());
+
+        // Restituisce la vista della lista
+        return "abbigliamento/list";
+    }
+```
+
