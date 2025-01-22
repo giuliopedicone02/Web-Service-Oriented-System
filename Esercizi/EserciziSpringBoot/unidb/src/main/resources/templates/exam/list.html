@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Esami</title>
+</head>
+
+<body>
+    <h1>
+        <center>Lista Esami</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>CFU</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="exam:${exams}">
+            <td th:text="${exam.name}"></td>
+            <td th:text="${exam.cfu}"></td>
+            <td>
+                <form action="/exam/edit" method="post">
+                    <input type="hidden" name="id" th:value="${exam.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/exam/delete" method="post">
+                    <input type="hidden" name="id" th:value="${exam.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci Esame</h3>
+
+    <form action="/exam/create" method="post">
+        <span>Inserisci nome:</span>
+        <input type="text" name="name">
+        <span>Inserisci CFU:</span>
+        <input type="number" name="cfu" min="1">
+        <input type="submit" value="Invia">
+    </form>
+
+    <br><br>
+    <a href="/students">Visualizza Studenti</a>
+</body>
+
+</html>
