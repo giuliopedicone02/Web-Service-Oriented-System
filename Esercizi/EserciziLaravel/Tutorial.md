@@ -40,7 +40,14 @@ php artisan make:model -a Project
 
 > **Attenzione:** Il nome della tabella (model) deve essere sempre in inglese e al singolare.
 
----
+
+## Struttura del progetto: Alternativa
+
+```bash
+php artisan make:model -cmr Project
+```
+
+> **Nota Bene:** Tramite questo comando creiamo il Model, il Controller e le Risorse, utilizzando questo non è necessario modificare le policy per lo store e l'update.
 
 ## Modifica dei campi della tabella tramite migrazioni
 
@@ -289,4 +296,58 @@ Testiamo la funzionalità creata con:
 
 ```bash
 php artisan serve
+```
+
+## Relazioni tra più tabelle
+
+
+Modificare il file presente in `database/migrations` aggiungendo delle informazioni relative alla chiave esterna che collega una tabella ad un'altra con relazione uno a molti.
+
+```php
+public function up(): void
+    {
+        Schema::create('movies', function (Blueprint $table) {
+            $table->id();
+            $table->string("title", 128);
+            $table->string("director", 64);
+            $table->integer("year");
+            $table->integer("duration_minutes")->nullable();
+
+            $table->foreignId('genre_id')
+                ->constrained('genres')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->timestamps();
+        });
+    }
+
+```
+
+Il codice crea una colonna `genre_id` come chiave esterna nella tabella corrente, collegata alla colonna id della tabella `genres`. Se si usa la notazione nell'esempio non è obbligatorio specificare la tabella di riferimento in `constrained` viene riconosciuta in automatico.
+
+- `onUpdate('cascade')`: aggiorna automaticamente genre_id se l'id di genres cambia.
+- `onDelete('cascade')`: elimina i record collegati se un genere viene eliminato.
+
+**Alternativa:** Utilizzare un metodo `Schema::table()`
+
+```php
+public function up(): void
+    {
+        Schema::create('movies', function (Blueprint $table) {
+            $table->id();
+            $table->string("title", 128);
+            $table->string("director", 64);
+            $table->integer("year");
+            $table->integer("duration_minutes")->nullable();
+            $table->timestamps();
+        });
+
+        Schema::table('movies', function (Blueprint $table) {
+            $table->foreignId('genre_id')
+                ->constrained('genres')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+        });
+    }
 ```
