@@ -388,3 +388,44 @@ Nel controller di **Abbigliamento**, aggiungiamo un metodo che utilizza il metod
     }
 ```
 
+### Gestione dell'eliminazione a cascata
+
+Supponiamo di avere i seguenti modelli:  
+- **Studenti**  
+- **Esami**  
+
+Se tentassimo di eliminare un esame sostenuto da uno o più studenti, ciò causerebbe un errore dovuto alla violazione delle dipendenze. Per risolvere questo problema, possiamo utilizzare l'annotazione `@OneToMany()` nella classe `Esami` per gestire l'eliminazione a cascata e la rimozione degli orfani:
+
+```java
+@OneToMany(mappedBy = "examId", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Student> students = new ArrayList<>();
+```
+
+In questo modo, l'eliminazione di un esame comporterà automaticamente l'eliminazione delle associazioni con gli studenti.
+
+---
+
+### Somma dei valori
+
+Il metodo `findAll()` restituisce una lista di oggetti del modello, consentendo di accedere facilmente ai metodi di ciascun oggetto. Di seguito, un esempio per calcolare la somma dei CFU degli esami utilizzando un ciclo `for` avanzato:
+
+```java
+public String getExams(Model model) {
+    // Recupera tutti gli esami dal repository
+    List<Exam> allExams = repo.findAll();
+    model.addAttribute("exams", allExams);
+
+    // Calcola la somma dei CFU
+    int totalCfu = 0;
+    for (Exam exam : allExams) {
+        totalCfu += exam.getCfu();
+    }
+
+    // Aggiungi la somma dei CFU come attributo del modello
+    model.addAttribute("countCFU", totalCfu);
+
+    return "exam/list";
+}
+```
+
+In questo esempio, la somma dei CFU viene calcolata iterando sulla lista degli esami, e il risultato viene aggiunto al modello per essere mostrato nella vista.
