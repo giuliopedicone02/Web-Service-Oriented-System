@@ -55,6 +55,17 @@
         <input type="submit" value="Invia">
     </form>
 
+    <h3>Filtra per Materia</h3>
+
+    <form action="/students/filterBySubject" method="post">
+        <span>Filtra per: </span>
+        <select name="examId">
+            <option th:each="exam:${exams}" th:value="${exam.id}" th:text="${exam.name}"></option>
+        </select>
+        <input type="submit" value="Cerca">
+    </form>
+
+
     <br><br>
     <a href="/exam">Visualizza Esami</a>
 

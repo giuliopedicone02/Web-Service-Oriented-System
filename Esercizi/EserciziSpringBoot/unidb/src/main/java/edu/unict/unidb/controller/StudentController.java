@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import edu.unict.unidb.model.Exam;
 import edu.unict.unidb.model.Student;
 import edu.unict.unidb.repositories.ExamRepository;
 import edu.unict.unidb.repositories.StudentRepository;
@@ -43,6 +44,14 @@ public class StudentController {
         model.addAttribute("student", studentRepository.getReferenceById(id));
         model.addAttribute("exams", examRepository.findAll());
         return "student/edit";
+    }
+
+    @PostMapping("/students/filterBySubject")
+    public String filterByStudent(Model model, Long examId) {
+        Exam exam = examRepository.getReferenceById(examId);
+        model.addAttribute("students", studentRepository.findByExamId(exam));
+        model.addAttribute("exams", examRepository.findAll());
+        return "student/list";
     }
 
 }

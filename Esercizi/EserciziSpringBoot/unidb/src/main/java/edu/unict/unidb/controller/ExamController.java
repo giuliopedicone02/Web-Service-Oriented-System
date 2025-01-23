@@ -1,5 +1,7 @@
 package edu.unict.unidb.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,16 @@ public class ExamController {
 
     @GetMapping("/exam")
     public String getExams(Model model) {
-        model.addAttribute("exams", repo.findAll());
+        List<Exam> allExams = repo.findAll();
+        model.addAttribute("exams", allExams);
+
+        int count = 0;
+        for (Exam elem : allExams) {
+            count += elem.getCfu();
+        }
+
+        model.addAttribute("countCFU", count);
+
         return "exam/list";
     }
 
