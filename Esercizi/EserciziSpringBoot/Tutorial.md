@@ -397,8 +397,8 @@ Supponiamo di avere i seguenti modelli:
 Se tentassimo di eliminare un esame sostenuto da uno o più studenti, ciò causerebbe un errore dovuto alla violazione delle dipendenze. Per risolvere questo problema, possiamo utilizzare l'annotazione `@OneToMany()` nella classe `Esami` per gestire l'eliminazione a cascata e la rimozione degli orfani:
 
 ```java
-@OneToMany(mappedBy = "examId", cascade = CascadeType.ALL, orphanRemoval = true)
-private List<Student> students = new ArrayList<>();
+@OneToMany(mappedBy = "examId", cascade = CascadeType.REMOVE)
+    private List<Student> students = new ArrayList<>();
 ```
 
 In questo modo, l'eliminazione di un esame comporterà automaticamente l'eliminazione delle associazioni con gli studenti.
@@ -427,5 +427,53 @@ public String getExams(Model model) {
     return "exam/list";
 }
 ```
-
 In questo esempio, la somma dei CFU viene calcolata iterando sulla lista degli esami, e il risultato viene aggiunto al modello per essere mostrato nella vista.
+
+Ecco una versione migliorata del testo:
+
+---
+
+### Modifica dei CFU
+
+Supponiamo di voler uniformare i CFU delle materie, portando a 6 CFU tutte quelle che attualmente ne hanno meno di 6. Per farlo, aggiungiamo un metodo alla repository per filtrare le materie in base al numero di CFU:
+
+```java
+List<Exam> findByCfuLessThan(int cfu);
+```
+
+Successivamente, implementiamo nel controller un metodo che aggiorna i CFU delle materie filtrate, impostandoli a 6:
+
+```java
+@PostMapping("/exam/fixCFU")
+public String fixCFU(Model model) {
+    List<Exam> esami = repo.findByCfuLessThan(6);
+
+    for (Exam elem : esami) {
+        elem.setCfu(6);
+        repo.save(elem);
+    }
+
+    return "redirect:/exam";
+}
+```
+
+In questo modo, tutte le materie con meno di 6 CFU saranno aggiornate automaticamente.
+
+---
+
+### Colorazione dinamica delle righe di una tabella
+
+Per modificare dinamicamente il colore delle righe di una tabella in base a una condizione, possiamo utilizzare Thymeleaf. Ad esempio, per evidenziare in rosso le righe relative a uno specifico esame (ad esempio, "WSOS"), possiamo scrivere:
+
+```html
+<tr th:if="${student.examId.name == 'WSOS'}" 
+    style="background-color: red; color: white;" 
+    th:each="student : ${students}">
+    ...
+</tr>
+
+<tr th:unless="${student.examId.name == 'WSOS'}" 
+    th:each="student : ${students}">
+    ...
+</tr>
+```
