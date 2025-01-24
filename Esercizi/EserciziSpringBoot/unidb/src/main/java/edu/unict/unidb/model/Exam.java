@@ -18,7 +18,7 @@ public class Exam {
     String name;
     int cfu;
 
-    @OneToMany(mappedBy = "examId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "examId", cascade = CascadeType.REMOVE)
     private List<Student> students = new ArrayList<>();
 
     public Exam() {

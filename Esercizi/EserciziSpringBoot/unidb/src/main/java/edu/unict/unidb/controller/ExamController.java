@@ -51,4 +51,16 @@ public class ExamController {
         return "exam/edit";
     }
 
+    @PostMapping("/exam/fixCFU")
+    public String fixCFU(Model model) {
+        List<Exam> esami = repo.findByCfuLessThan(6);
+
+        for (Exam elem : esami) {
+            elem.setCfu(6);
+            repo.save(elem);
+        }
+
+        return "redirect:/exam";
+    }
+
 }

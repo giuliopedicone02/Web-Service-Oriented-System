@@ -22,10 +22,30 @@
             <th>Modifica</th>
             <th>Elimina</th>
         </tr>
-        <tr th:each="student : ${students}">
+        <tr th:if="${student.examId.name == 'WSOS'}" style="background-color: red; color: white;"
+            th:each="student : ${students}">
             <td th:text="${student.name}"></td>
             <td th:text="${student.matricola}"></td>
             <td th:text="${student.examId.name}"></td>
+
+            <td>
+                <form action="/students/edit" method="post">
+                    <input type="hidden" name="id" th:value="${student.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/students/delete" method="post">
+                    <input type="hidden" name="id" th:value="${student.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+        <tr th:unless="${student.examId.name == 'WSOS'}" th:each="student : ${students}">
+            <td th:text="${student.name}"></td>
+            <td th:text="${student.matricola}"></td>
+            <td th:text="${student.examId.name}"></td>
+
             <td>
                 <form action="/students/edit" method="post">
                     <input type="hidden" name="id" th:value="${student.id}">
