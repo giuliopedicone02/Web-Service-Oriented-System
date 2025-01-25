@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iscritti</title>
+</head>
+
+<body>
+    <h1>
+        <center>Iscritti</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Età</th>
+            <th>Peso</th>
+            <th>Palestra</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="iscritto: ${iscritti}">
+            <td th:text="${iscritto.name}"></td>
+            <td th:text="${iscritto.age}"></td>
+            <td th:text="${iscritto.weight}"></td>
+            <td th:text="${iscritto.palestraId.name}"></td>
+            <td>
+                <form action="/iscritti/edit" method="post">
+                    <input type="hidden" name="id" th:value="${iscritto.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/iscritti/delete" method="post">
+                    <input type="hidden" name="id" th:value="${iscritto.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci una nuova palestra</h3>
+
+    <form action="/iscritti/create" method="post">
+        <span>Inserisci Nome:</span>
+        <input type="text" name="name">
+        <span>Inserisci Età: </span>
+        <input type="number" name="age">
+        <span>Inserisci Peso: </span>
+        <input type="number" name="weight">
+        <span>Inserisci Palestra</span>
+        <select name="palestraId">
+            <option th:each="palestra : ${palestre}" th:value="${palestra.id}" th:text="${palestra.name}"></option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+    <h3>Filtra per Palestra</h3>
+
+    <form action="/iscritti/findByPalestra" method="post">
+        <span>Seleziona Palestra: </span>
+        <select name="palestraId">
+            <option th:each="palestra : ${palestre}" th:value="${palestra.id}" th:text="${palestra.name}"></option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+    <br><br>
+    <a href="/palestre">Visualizza le palestre</a>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisti</title>
+</head>
+
+<body>
+    <h1>
+        <center>Lista degli Artisti</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Numero Album</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="artista : ${artisti}">
+            <td th:text="${artista.name}"></td>
+            <td th:text="${artista.numeroAlbum}"></td>
+            <td>
+                <form action="/artisti/update" method="post">
+                    <input type="hidden" name="id" th:value="${artista.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/artisti/delete" method="post">
+                    <input type="hidden" name="id" th:value="${artista.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci artista</h3>
+
+    <form action="/artisti/create" method="post">
+        <span>Nome:</span>
+        <input type="text" name="name">
+        <span>Numero di Album</span>
+        <input type="number" name="numeroAlbum">
+        <input type="submit" value="Invia">
+    </form>
+
+    <br><br>
+
+    <a href="/brani">Visualizza i Brani</a>
+</body>
+
+</html>

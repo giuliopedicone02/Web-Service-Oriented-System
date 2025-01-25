@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Artista</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica Artista</center>
+    </h1>
+
+
+    <form action="/artisti/create" method="post" th:object="${artista}">
+        <input type="hidden" name="id" th:value="${artista.id}">
+        <span>Nome:</span>
+        <input type="text" name="name" th:value="${artista.name}">
+        <span>Numero di Album</span>
+        <input type="number" name="numeroAlbum" th:value="${artista.numeroAlbum}">
+        <input type="submit" value="Modifica">
+    </form>
+</body>
+
+</html>

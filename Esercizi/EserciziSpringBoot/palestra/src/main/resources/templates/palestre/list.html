@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palestre</title>
+</head>
+
+<body>
+    <h1>
+        <center>Palestre</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Indirizzo</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="palestra: ${palestre}">
+            <td th:text="${palestra.name}"></td>
+            <td th:text="${palestra.address}"></td>
+            <td>
+                <form action="/palestre/edit" method="post">
+                    <input type="hidden" name="id" th:value="${palestra.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/palestre/delete" method="post">
+                    <input type="hidden" name="id" th:value="${palestra.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Inserisci una nuova palestra</h3>
+
+    <form action="/palestre/create" method="post">
+        <span>Inserisci Nome:</span>
+        <input type="text" name="name">
+        <span>Inserisci indirizzo: </span>
+        <input type="text" name="address">
+        <input type="submit" value="Invia">
+    </form>
+
+
+    <br><br>
+    <a href="/iscritti">Visualizza gli iscritti</a>
+</body>
+
+</html>

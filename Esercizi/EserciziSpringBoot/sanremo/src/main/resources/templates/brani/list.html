@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brani</title>
+</head>
+
+<body>
+    <h1>
+        <center>Lista dei Brani</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Titolo</th>
+            <th>Durata</th>
+            <th>Cantante</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="brano : ${brani}">
+            <td th:text="${brano.title}"></td>
+            <td th:text="${brano.durata}"></td>
+            <td th:text="${brano.artistiId.name}"></td>
+
+            <td>
+                <form action="/brani/update" method="post">
+                    <input type="hidden" name="id" th:value="${brano.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/brani/delete" method="post">
+                    <input type="hidden" name="id" th:value="${brano.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Ricerca per Brano</h3>
+
+    <form action="/brani/searchSong" method="post">
+        <span>Titolo: </span>
+        <input type="text" name="title">
+        <input type="submit" value="Cerca">
+    </form>
+
+    <h3>Inserisci brano</h3>
+
+    <form action="/brani/create" method="post">
+        <span>Titolo:</span>
+        <input type="text" name="title">
+        <span>Durata:</span>
+        <input type="number" name="durata">
+        <select name="artistiId">
+            <option th:each="artista : ${artisti}" th:value="${artista.id}" th:text="${artista.name}"></option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+    <br><br>
+
+    <a href="/artisti">Visualizza gli Artisti</a>
+</body>
+
+</html>

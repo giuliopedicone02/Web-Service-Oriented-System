@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Artista</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica Brano</center>
+    </h1>
+
+
+    <form action="/brani/create" method="post" th:object="${brano}">
+        <input type="hidden" name="id" th:value="${brano.id}">
+        <span>Titolo:</span>
+        <input type="text" name="title" th:value="${brano.title}">
+        <span>Durata:</span>
+        <input type="number" name="durata" th:value="${brano.durata}">
+        <select name="artistiId">
+            <option th:each="artista : ${artisti}" th:value="${artista.id}" th:text="${artista.name}"></option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+</body>
+
+</html>

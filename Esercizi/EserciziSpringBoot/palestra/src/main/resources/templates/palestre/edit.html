@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Palestra</title>
+</head>
+
+<body>
+    <h3>Modifica palestra</h3>
+
+    <form action="/palestre/create" method="post" th:object="${palestre}">
+        <input type="hidden" name="id" th:value="${palestre.id}">
+        <span>Modifica Nome:</span>
+        <input type=" text" name="name" th:value="${palestre.name}">
+        <span>Modifica indirizzo: </span>
+        <input type="text" name="address" th:value="${palestre.address}">
+        <input type="submit" value="Modifica">
+    </form>
+</body>
+
+</html>
