@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classi</title>
+</head>
+
+<body>
+    <h1>
+        <center>Lista delle Classi</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Anno</th>
+            <th>Sezione</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="classe : ${classi}">
+            <td th:text="${classe.anno}"></td>
+            <td th:text="${classe.sezione}"></td>
+            <td>
+                <form action="/classi/edit" method="post">
+                    <input type="hidden" name="id" th:value="${classe.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/classi/delete" method="post">
+                    <input type="hidden" name="id" th:value="${classe.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h2>Inserisci una nuova classe</h2>
+
+    <form action="/classi/create" method="post">
+        <span>Inserisci anno</span>
+        <input type="number" name="anno">
+        <span>Inserisci sezione</span>
+        <input type="text" name="sezione">
+        <input type="submit" value="Invia">
+    </form>
+
+    <br><br>
+
+    <a href="/studenti">Visualizza Studenti</a>
+</body>
+
+</html>

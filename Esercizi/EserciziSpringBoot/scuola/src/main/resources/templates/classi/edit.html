@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Classe</title>
+</head>
+
+<body>
+
+    <h2>Modifica una nuova classe</h2>
+
+    <form action="/classi/create" method="post" th:object="${classe}">
+        <input type="hidden" name="id" th:value="${classe.id}">
+        <span>Inserisci anno</span>
+        <input type="number" name="anno" th:value="${classe.anno}">
+        <span>Inserisci sezione</span>
+        <input type="text" name="sezione" th:value="${classe.sezione}">
+        <input type="submit" value="Invia">
+    </form>
+
+</body>
+
+</html>

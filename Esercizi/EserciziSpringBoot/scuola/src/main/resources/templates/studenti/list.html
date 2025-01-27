@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="https://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studenti</title>
+</head>
+
+<body>
+    <h1>
+        <center>Lista degli studenti</center>
+    </h1>
+
+    <table border="1px">
+        <tr>
+            <th>Nome</th>
+            <th>Età</th>
+            <th>Classe</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="studente : ${studenti}">
+            <td th:text="${studente.name}"></td>
+            <td th:text="${studente.age}"></td>
+            <td th:text="${studente.classiId.anno} + ${studente.classiId.sezione}"></td>
+            <td>
+                <form action="/studenti/edit" method="post">
+                    <input type="hidden" name="id" th:value="${studente.id}">
+                    <input type="submit" value="Modifica">
+                </form>
+            </td>
+            <td>
+                <form action="/studenti/delete" method="post">
+                    <input type="hidden" name="id" th:value="${studente.id}">
+                    <input type="submit" value="Elimina">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h2>Inserisci un nuovo studente</h2>
+
+    <form action="/studenti/create" method="post">
+        <span>Inserisci nome</span>
+        <input type="text" name="name">
+        <span>Inserisci età</span>
+        <input type="number" name="age">
+        <span>Inserisci classe</span>
+        <select name="classiId">
+            <option th:each="classe : ${classi}" th:value="${classe.id}" th:text="${classe.anno} + ${classe.sezione}">
+            </option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+    <h2>Filtra per classe</h2>
+
+    <form action="/studenti/findByClass" method="post">
+        <span>Seleziona classe:</span>
+        <select name="classiId">
+            <option th:each="classe : ${classi}" th:value="${classe.id}" th:text="${classe.anno} + ${classe.sezione}">
+            </option>
+            <input type="submit" value="Ricerca">
+        </select>
+    </form>
+</body>
+
+<br><br>
+
+<a href="/classi">Visualizza Classi</a>
+
+</html>

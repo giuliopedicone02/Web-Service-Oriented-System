@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Studente</title>
+</head>
+
+<body>
+
+    <h2>Modifica uno studente</h2>
+
+    <form action="/studenti/create" method="post" th:object="${studente}">
+        <input type="hidden" name="id" th:value="${studente.id}">
+        <span>Modifica nome</span>
+        <input type="text" name="name" th:value="${studente.name}">
+        <span>Inserisci età</span>
+        <input type="number" name="age" th:value="${studente.age}">
+        <span>Inserisci classe</span>
+        <select name="classiId">
+            <option th:each="classe : ${classi}" th:value="${classe.id}" th:text="${classe.anno} + ${classe.sezione}">
+            </option>
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+</body>
+
+</html>
