@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>
+        <center>Home cantanti</center>
+    </h1>
+    <table border="1">
+        <tr>
+            <th>nome</th>
+            <th>sanremo</th>
+            <th>genere</th>
+            <th colspan="2">azioni</th>
+        </tr>
+        <tr th:each="c:${cantanti}">
+            <td th:text="${c.nome}"></td>
+            <td th:text="${c.sanremo}"></td>
+            <td th:text="${c.genereId.nome}"></td>
+            <td>
+                <form action="/cantanti/modifica" method="post">
+                    <input type="hidden" name="id" th:value="${c.id}">
+                    <button>modifica</button>
+                </form>
+            </td>
+            <td>
+                <form action="/cantanti/elimina" method="post">
+                    <input type="hidden" name="id" th:value="${c.id}">
+                    <button>elimina</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <a href="/cantanti/inserimento">Inserisci un nuovo genere</a>
+
+    <h3>Cerca per genere</h3>
+
+    <form action="/cantanti/findByGenere" method="post">
+        <span>Trova genere:</span>
+        <select name="genereId">
+            <option th:each="g:${generi}" th:value="${g.id}" th:text="${g.nome}"></option>
+        </select>
+        <button>invia</button>
+    </form>
+</body>
+
+</html>

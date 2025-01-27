@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica genere</center>
+    </h1>
+    <form action="/genere/update" th:object="${genere}" method="post">
+        <input type="hidden" name="id" th:value="${genere.id}">
+        <span>nome genere: </span><input type="text" name="nome" th:value="${genere.nome}">
+        <button>invia</button>
+    </form>
+    <br>
+    <a href="/genere">Torna ai generi</a>
+</body>
+
+</html>

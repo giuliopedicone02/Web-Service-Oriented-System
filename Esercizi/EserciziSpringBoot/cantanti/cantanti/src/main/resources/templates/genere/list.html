@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>
+        <center>Home generi</center>
+    </h1>
+    <table border="1">
+        <tr>
+            <th>nome</th>
+            <th colspan="2">azioni</th>
+        </tr>
+        <tr th:each="g:${generi}">
+            <td th:text="${g.nome}"></td>
+            <td>
+                <form action="/genere/modifica" method="post">
+                    <input type="hidden" name="id" th:value="${g.id}">
+                    <button>modifica</button>
+                </form>
+            </td>
+            <td>
+                <form action="/genere/elimina" method="post">
+                    <input type="hidden" name="id" th:value="${g.id}">
+                    <button>elimina</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <a href="/genere/inserimento">Inserisci un nuovo genere</a>
+</body>
+
+</html>

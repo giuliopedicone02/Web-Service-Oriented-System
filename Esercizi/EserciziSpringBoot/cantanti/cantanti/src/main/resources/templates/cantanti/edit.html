@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica cantanti</center>
+    </h1>
+    <form action="/cantanti/update" th:object="${cantante}" method="post">
+        <input type="hidden" name="id" th:value="${cantante.id}">
+        <span>nome cantante: </span><input type="text" name="nome" th:value="${cantante.nome}">
+        <span>Sanremo: </span><select name="sanremo">
+            <option th:value="1">SI</option>
+            <option th:value="0">NO</option>
+        </select>
+
+        <span>Genere: </span><select name="genereId">
+            <option th:each="g:${generi}" th:value="${g.id}" th:text="${g.nome}"></option>
+        </select>
+        <button>invia</button>
+    </form>
+    <br>
+    <a href="/cantanti">Torna ai generi</a>
+</body>
+
+</html>
