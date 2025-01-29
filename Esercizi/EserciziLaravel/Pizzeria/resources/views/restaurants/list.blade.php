@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Lista dei ristoranti</title>
 </head>
+
 <body>
     <h3>Lista dei ristoranti</h3>
 
@@ -20,12 +22,22 @@
         </tr>
         @foreach ($restaurant as $item)
             <tr>
-                <td>{{$item->name}}</td>
-                <td>{{$item->foundation}}</td>
-                <td>{{$item->star}}</td>
-                <td>{{$item->chef_id}}</td>
-                <td>Modifica</td>
-                <td>Elimina</td>
+                <td>{{ $item->name }}</td>
+                <td>{{ $item->foundation }}</td>
+                <td>{{ $item->star }}</td>
+                <td>{{ $item->chef->name }}</td>
+                <td>
+                    <form action="/restaurants/{{ $item->id }}/edit" method="get">
+                        <input type="submit" value="Modifica">
+                    </form>
+                </td>
+                <td>
+                    <form action="/restaurants/{{ $item->id }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" value="Elimina">
+                    </form>
+                </td>
             </tr>
         @endforeach
     </table>
@@ -33,19 +45,21 @@
     <h3>Inserimento di un nuovo ristorante</h3>
 
     <form action="/restaurants" method="post">
-    <span>Inserisci nome ristorante</span>
-    <input type="text" name="name">
-    <span>Inserisci anno di fondazione</span>
-    <input type="number" name="foundation">
-    <span>Inserisci numero stelle</span>
-    <input type="number" name="star">
-    <span>Inserisci chef</span>
-    <select name="chefId">
-        @foreach ($chefs as $item)
-            <option value="{{$item->id}}">{{$item->name}}</option>
-        @endforeach
-    </select>
-    <input type="submit" value="Invia">
+        @csrf
+        <span>Inserisci nome ristorante</span>
+        <input type="text" name="name">
+        <span>Inserisci anno di fondazione</span>
+        <input type="number" name="foundation">
+        <span>Inserisci numero stelle</span>
+        <input type="number" name="star">
+        <span>Inserisci chef</span>
+        <select name="chefId">
+            @foreach ($chefs as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
+        <input type="submit" value="Invia">
     </form>
 </body>
+
 </html>

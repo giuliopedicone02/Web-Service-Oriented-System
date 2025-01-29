@@ -31,7 +31,13 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $restaurant = new Restaurant();
+        $restaurant->name = request('name');
+        $restaurant->foundation = request('foundation');
+        $restaurant->star = request('star');
+        $restaurant->chef_id = request('chefId');
+        $restaurant->save();
+        return redirect("/restaurants");
     }
 
     /**
@@ -47,7 +53,8 @@ class RestaurantController extends Controller
      */
     public function edit(Restaurant $restaurant)
     {
-        //
+        $chefs = Chef::all();
+        return view("restaurants.edit", compact("restaurant", "chefs"));
     }
 
     /**
@@ -55,7 +62,12 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, Restaurant $restaurant)
     {
-        //
+        $restaurant->name = request('name');
+        $restaurant->foundation = request('foundation');
+        $restaurant->star = request('star');
+        $restaurant->chef_id = request('chefId');
+        $restaurant->save();
+        return redirect("/restaurants");
     }
 
     /**
@@ -63,6 +75,7 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
-        //
+        $restaurant->delete();
+        return redirect("/restaurants");
     }
 }
