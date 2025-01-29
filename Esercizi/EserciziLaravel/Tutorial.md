@@ -40,6 +40,8 @@ php artisan make:model -cmr Genre
 
 > **Attenzione:** Il nome della tabella (model) deve essere sempre in inglese e al singolare.
 
+<div style="page-break-after: always;"></div>
+
 ## Modifica dei campi della tabella tramite migrazioni
 
 Modificare il file `database/migrations` denominato `create_genres_table` aggiungendo i campi relativi al genere, come ad esempio:
@@ -81,6 +83,8 @@ Route::resource('/genres', GenreController::class);
 ```
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ## Sviluppo delle funzionalità CRUD
 
@@ -130,6 +134,8 @@ Creiamo una view `index.blade.php` in `resources/views` che permetterà di visua
 ```
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ### Create
 
@@ -233,6 +239,8 @@ public function update(UpdateProjectRequest $request, Genre $genre)
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 Aggiungiamo al file `index.blade.php`:
 
 ```html
@@ -254,6 +262,8 @@ php artisan serve
 ```
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ## Relazioni tra più tabelle
 
@@ -295,6 +305,8 @@ Il codice crea una colonna `genre_id` come chiave esterna nella tabella `books`,
 - `onDelete('cascade')`: elimina i record collegati se un genere viene eliminato.
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ## Modifica delle route
 
@@ -363,6 +375,8 @@ Esempio:
 ```
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ## Visualizzazione dell'elenco dei generi nelle fasi di creazione e modifica
 
