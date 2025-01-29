@@ -35,36 +35,25 @@ DB_PASSWORD=password
 Creazione del model e del REST controller
 
 ```bash
-php artisan make:model -a Project
+php artisan make:model -cmr Genre
 ```
 
 > **Attenzione:** Il nome della tabella (model) deve essere sempre in inglese e al singolare.
 
-
-## Struttura del progetto: Alternativa
-
-```bash
-php artisan make:model -cmr Project
-```
-
-> **Nota Bene:** Tramite questo comando creiamo il Model, il Controller e le Risorse, utilizzando questo non è necessario modificare le policy per lo store e l'update.
-
 ## Modifica dei campi della tabella tramite migrazioni
 
-Modificare il file `database/migrations` denominato `create_projects_table` aggiungendo i campi relativi ad un progetto, come ad esempio:
+Modificare il file `database/migrations` denominato `create_genres_table` aggiungendo i campi relativi al genere, come ad esempio:
 
-- Titolo del progetto (stringa di 255 caratteri)
-- Descrizione del progetto (testo)
+- Nome del genere (stringa di 255 caratteri)
 
 Aggiungiamo quindi:
 
 ```php
 public function up(): void
 {
-    Schema::create('projects', function (Blueprint $table) {
+    Schema::create('genres', function (Blueprint $table) {
         $table->id();
-        $table->string('title'); // Aggiunto a mano
-        $table->text('description'); // Aggiunto a mano
+        $table->string('name'); // Aggiunto a mano
         $table->timestamps();
     });
 }
@@ -80,15 +69,15 @@ php artisan migrate
 
 ## Modifica delle route
 
-Modifichiamo il file `web.php` presente in `Progetti/routes`, aggiungendo le informazioni relative al controller REST appena creato:
+Modifichiamo il file `web.php` presente in `/routes`, aggiungendo le informazioni relative al controller REST appena creato:
 
 ```php
 <?php
 
-use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\GenreController;
 use Illuminate\Support\Facades\Route;
 
-Route::resource('/projects', ProjectController::class);
+Route::resource('/genres', GenreController::class);
 ```
 
 ---
@@ -97,13 +86,13 @@ Route::resource('/projects', ProjectController::class);
 
 ### Read
 
-Modifichiamo il `ProjectController` presente in `app/Http/Controllers`, aggiornando il metodo `index`:
+Modifichiamo il `GenreController` presente in `app/Http/Controllers`, aggiornando il metodo `index`:
 
 ```php
 public function index()
 {
-    $project = Project::all();
-    return view('index', compact('project'));
+    $genre = Genre::all();
+    return view('index', compact('genre'));
 }
 ```
 
@@ -112,37 +101,31 @@ Creiamo una view `index.blade.php` in `resources/views` che permetterà di visua
 ```html
 <!DOCTYPE html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Progetti</title>
-</head>
-<body>
-    <h1><center>Progetti in Laravel</center></h1>
+  </head>
+  <body>
+    <h1><center>Lista dei Generi</center></h1>
 
     <table border="1px">
-        <tr>
-            <th>Titolo</th>
-            <th>Descrizione</th>
-            <th>Modifica</th>
-            <th>Elimina</th>
-        </tr>
-        
-        @foreach ($project as $proj)
-        <tr>
-            <td>{{$proj->title}}</td>
-            <td>{{$proj->description}}</td>
-            <td>
-                Modifica....
-            </td>
-            <td>
-                Elimina....
-            </td>
-        </tr>
-        @endforeach
+      <tr>
+        <th>Nome</th>
+        <th>Modifica</th>
+        <th>Elimina</th>
+      </tr>
+
+      @foreach ($genre as $item)
+      <tr>
+        <td>{{$item->name}}</td>
+        <td>Modifica....</td>
+        <td>Elimina....</td>
+      </tr>
+      @endforeach
     </table>
-</body>
+  </body>
 </html>
 ```
 
@@ -150,42 +133,28 @@ Creiamo una view `index.blade.php` in `resources/views` che permetterà di visua
 
 ### Create
 
-Modifichiamo il `ProjectController`, aggiornando il metodo `store`:
+Modifichiamo il `GenreController`, aggiornando il metodo `store`:
 
 ```php
-public function store(StoreProjectRequest $request)
+public function store(StoreGenreRequest $request)
 {
-    $project = new Project();
-    $project->title = request('title');
-    $project->description = request('description');
-    $project->save();
-    return redirect('/projects');
+    $genre = new Genre();
+    $genre->name = request('name');
+    $genre->save();
+    return redirect('/genres');
 }
 ```
-
-Modifichiamo il file `StoreProjectRequest.php` presente in `app/Http/Requests/`, sostituendo `return false` con `return true`:
-
-```php
-public function authorize(): bool
-{
-    return true;
-}
-```
-
-> **Nota Bene:** Passaggio fondamentale, altrimenti verrebbe restituito l'errore 403.
 
 Aggiungiamo al file `index.blade.php`:
 
 ```html
 <h3>Inserimento dei progetti</h3>
 
-<form action="/projects" method="post">
-    @csrf
-    <span>Titolo: </span>
-    <input type="text" name="title">
-    <span>Descrizione: </span>
-    <textarea name="description"></textarea>
-    <input type="submit" value="Invia">
+<form action="/genres" method="post">
+  @csrf
+  <span>Nome del genere: </span>
+  <input type="text" name="name" />
+  <input type="submit" value="Invia" />
 </form>
 ```
 
@@ -195,13 +164,13 @@ Aggiungiamo al file `index.blade.php`:
 
 ### Delete
 
-Modifichiamo il `ProjectController`, aggiornando il metodo `destroy`:
+Modifichiamo il `GenreController`, aggiornando il metodo `destroy`:
 
 ```php
-public function destroy(Project $project)
+public function destroy(Genre $genre)
 {
-    $project->delete();
-    return redirect('/projects');
+    $genre->delete();
+    return redirect('/genres');
 }
 ```
 
@@ -209,11 +178,10 @@ Aggiungiamo al file `index.blade.php`:
 
 ```html
 <td>
-    <form action="/projects/{{ $proj->id }}" method="post">
-        @csrf
-        @method('DELETE')
-        <button type="submit">Elimina</button>
-    </form>
+  <form action="/genres/{{ $item->id }}" method="post">
+    @csrf @method('DELETE')
+    <button type="submit">Elimina</button>
+  </form>
 </td>
 ```
 
@@ -221,60 +189,47 @@ Aggiungiamo al file `index.blade.php`:
 
 ### Update
 
-Modifichiamo il `ProjectController`, aggiornando il metodo `edit`:
+Modifichiamo il `GenreController`, aggiornando il metodo `edit`:
 
 ```php
-public function edit(Project $project)
+public function edit(Genre $genre)
 {
-    return view('edit', compact('project'));
+    return view('edit', compact('genre'));
 }
 ```
 
-Modifichiamo il file `UpdateProjectRequest.php` presente in `app/Http/Requests/`, sostituendo `return false` con `return true`:
-
-```php
-public function authorize(): bool
-{
-    return true;
-}
-```
-
-Creiamo una view `edit.blade.php` in `resources/views` che permetterà di editare il progetto (`project`) che passiamo tramite il controller:
+Creiamo una view `edit.blade.php` in `resources/views` che permetterà di editare il progetto (`genre`) che passiamo tramite il controller:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Modifica Progetto</title>
-</head>
-<body>
-    <h1><center>Modifica Progetto</center></h1>
+  </head>
+  <body>
+    <h1><center>Modifica Genere</center></h1>
 
-    <form action="/projects/{{ $project->id }}" method="post">
-        @csrf
-        @method('PATCH')
-        <span>Titolo:</span>
-        <input type="text" name="title" value="{{ $project->title }}"><br>
-        <span>Descrizione:</span>
-        <textarea name="description">{{ $project->description }}</textarea>
-        <input type="submit" value="Modifica">
+    <form action="/genres/{{ $genre->id }}" method="post">
+      @csrf @method('PATCH')
+      <span>Nome:</span>
+      <input type="text" name="name" value="{{ $genre->name }}" />
+      <input type="submit" value="Modifica" />
     </form>
-</body>
+  </body>
 </html>
 ```
 
-Modifichiamo il `ProjectController`, aggiornando il metodo `update`:
+Modifichiamo il `GenreController`, aggiornando il metodo `update`:
 
 ```php
-public function update(UpdateProjectRequest $request, Project $project)
+public function update(UpdateProjectRequest $request, Genre $genre)
 {
-    $project->title = request('title');
-    $project->description = request('description');
-    $project->save();
-    return redirect('/projects');
+    $genre->name = request('name');
+    $genre->save();
+    return redirect('/genres');
 }
 ```
 
@@ -282,9 +237,9 @@ Aggiungiamo al file `index.blade.php`:
 
 ```html
 <td>
-    <form action="/projects/{{ $proj->id }}/edit" method="get">
-        <button type="submit">Modifica</button>
-    </form>
+  <form action="/projects/{{ $item->id }}/edit" method="get">
+    <button type="submit">Modifica</button>
+  </form>
 </td>
 ```
 
@@ -298,56 +253,155 @@ Testiamo la funzionalità creata con:
 php artisan serve
 ```
 
+---
+
 ## Relazioni tra più tabelle
 
+Creiamo ora una nuova entità `Books`, che può essere associata a un genere tramite una chiave esterna. Del libro vogliamo memorizzare i seguenti dati:
 
-Modificare il file presente in `database/migrations` aggiungendo delle informazioni relative alla chiave esterna che collega una tabella ad un'altra con relazione uno a molti.
+- Nome del libro (stringa di 255 caratteri)
+- Autore (stringa di 255 caratteri)
+- Anno (valore intero)
+- Genere (chiave esterna verso la tabella `Genres`)
+
+Creiamo quindi il model e il REST controller con il seguente comando:
+
+```bash
+php artisan make:model -cmr Book
+```
+
+Modifichiamo il file presente in `database/migrations`, aggiungendo le informazioni relative alla chiave esterna che collega la tabella `books` alla tabella `genres` con una relazione uno a molti.
 
 ```php
 public function up(): void
-    {
-        Schema::create('movies', function (Blueprint $table) {
-            $table->id();
-            $table->string("title", 128);
-            $table->string("director", 64);
-            $table->integer("year");
-            $table->integer("duration_minutes")->nullable();
-
-            $table->foreignId('genre_id')
-                ->constrained('genres')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
-            $table->timestamps();
-        });
-    }
-
+{
+    Schema::create('books', function (Blueprint $table) {
+        $table->id();
+        $table->string("name");
+        $table->string("author");
+        $table->integer("year");
+        $table->foreignId("genre_id")
+            ->constrained("genres")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+        $table->timestamps();
+    });
+}
 ```
 
-Il codice crea una colonna `genre_id` come chiave esterna nella tabella corrente, collegata alla colonna id della tabella `genres`. Se si usa la notazione nell'esempio non è obbligatorio specificare la tabella di riferimento in `constrained` viene riconosciuta in automatico.
+Il codice crea una colonna `genre_id` come chiave esterna nella tabella `books`, collegata alla colonna `id` della tabella `genres`. Se si utilizza la notazione mostrata nell'esempio, non è necessario specificare manualmente la tabella di riferimento in `constrained`, poiché viene riconosciuta automaticamente.
 
-- `onUpdate('cascade')`: aggiorna automaticamente genre_id se l'id di genres cambia.
+- `onUpdate('cascade')`: aggiorna automaticamente `genre_id` se l'ID di `genres` cambia.
 - `onDelete('cascade')`: elimina i record collegati se un genere viene eliminato.
 
-**Alternativa:** Utilizzare un metodo `Schema::table()`
+---
+
+## Modifica delle route
+
+Modifichiamo il file `web.php`, presente in `/routes`, aggiungendo le informazioni relative al controller REST appena creato:
 
 ```php
-public function up(): void
-    {
-        Schema::create('movies', function (Blueprint $table) {
-            $table->id();
-            $table->string("title", 128);
-            $table->string("director", 64);
-            $table->integer("year");
-            $table->integer("duration_minutes")->nullable();
-            $table->timestamps();
-        });
+<?php
 
-        Schema::table('movies', function (Blueprint $table) {
-            $table->foreignId('genre_id')
-                ->constrained('genres')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-        });
-    }
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\BookController;
+use Illuminate\Support\Facades\Route;
+
+Route::resource('/genres', GenreController::class);
+Route::resource('/books', BookController::class); // Aggiunto
 ```
+
+---
+
+## Modifica dei model
+
+Per poter visualizzare il nome del genere a partire dal libro, è necessario aggiungere una funzione nel model che permetta di restituire l'oggetto `Genre`.
+
+Aggiungiamo i seguenti metodi:
+
+- `belongsTo()`: nella tabella che contiene la chiave esterna (`books`).
+- `hasMany()`: nella tabella di riferimento (`genres`).
+
+Modifichiamo quindi il file `Book.php`, presente in `app/Models`, aggiungendo il metodo `belongsTo()`:
+
+```php
+class Book extends Model
+{
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class);
+    }
+}
+```
+
+Modifichiamo il file `Genre.php`, aggiungendo il metodo `hasMany()`:
+
+```php
+class Genre extends Model
+{
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
+}
+```
+
+Ora sarà possibile utilizzare il metodo `genre` per accedere al parametro `name` e visualizzarlo.
+
+Esempio:
+
+```html
+@foreach ($books as $item)
+<tr>
+  <td>{{ $item->name }}</td>
+  <td>{{ $item->author }}</td>
+  <td>{{ $item->year }}</td>
+  <!-- Visualizza il nome del genere associato -->
+  <td>{{ $item->genre->name }}</td>
+</tr>
+@endforeach
+```
+
+---
+
+## Visualizzazione dell'elenco dei generi nelle fasi di creazione e modifica
+
+### Create
+
+Modifichiamo il `BookController`, presente in `app/Http/Controllers`, aggiornando il metodo `index`:
+
+```php
+public function index()
+{
+    $books = Book::all();
+    $genres = Genre::all();
+    return view("books.list", compact("genres", "books"));
+}
+```
+
+### Edit
+
+Modifichiamo il `BookController`, aggiornando il metodo `edit`:
+
+```php
+public function edit(Book $book)
+{
+    $genres = Genre::all();
+    return view("books.edit", compact("book", "genres"));
+}
+```
+
+### Visualizzazione dell'elenco a cascata
+
+Aggiorniamo i file `index.blade.php` e `edit.blade.php`, aggiungendo il seguente codice:
+
+```html
+<span>Inserisci genere: </span>
+<select name="genre_id">
+  @foreach ($genres as $item)
+  <option value="{{ $item->id }}">{{ $item->name }}</option>
+  @endforeach
+</select>
+```
+
+Ora, durante la creazione o la modifica di un libro, sarà possibile selezionare il genere da un elenco a cascata.
