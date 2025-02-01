@@ -413,7 +413,9 @@ Aggiorniamo i file `index.blade.php` e `edit.blade.php`, aggiungendo il seguente
 <span>Inserisci genere: </span>
 <select name="genre_id">
   @foreach ($genres as $item)
-  <option value="{{ $item->id }}">{{ $item->name }}</option>
+  <option value="{{ $item->id }}" @if ($item->
+    id == $book->team_id) selected @endif>{{ $item->name }}
+  </option>
   @endforeach
 </select>
 ```
