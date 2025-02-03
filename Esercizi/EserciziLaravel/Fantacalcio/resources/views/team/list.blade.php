@@ -57,6 +57,17 @@
         <button>Invia</button>
     </form>
 
+    <h3>Vsiualizza i team che hanno vinto almeno ... campionati</h3>
+    <form action="/teams/findByWin" method="post">
+        @csrf
+        <span>Numero campionati: </span>
+        <input type="number" name="campionati">
+        <button>Invia</button>
+    </form>
+
+    <h3>Dimezza il numero di coppe vinte</h3>
+    <a href="/teams/halfCups">Dimezza</a>
+
     <h3>Vai ai giocatori</h3>
     <a href="/players">Visualizza i Giocatori</a>
 </body>

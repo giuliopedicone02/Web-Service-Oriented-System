@@ -25,24 +25,28 @@
             <th>Elimina</th>
         </tr>
         @foreach ($player as $item)
-            <tr>
-                <td>{{ $item->name }}</td>
-                <td>{{ $item->age }}</td>
-                <td>{{ $item->injured ? 'SI' : 'NO' }}</td>
-                <td>{{ $item->team->name }}</td>
+            @if ($item->age == 22)
+                <tr style="background-color: coral">
+                @else
+                <tr>
+            @endif
+            <td>{{ $item->name }}</td>
+            <td>{{ $item->age }}</td>
+            <td>{{ $item->injured ? 'SI' : 'NO' }}</td>
+            <td>{{ $item->team->name }}</td>
 
-                <td>
-                    <form action="/players/{{ $item->id }}/edit" method="get">
-                        <button>Modifica</button>
-                    </form>
-                </td>
-                <td>
-                    <form action="/players/{{ $item->id }}" method="post">
-                        @csrf
-                        @method('DELETE')
-                        <button>Elimina</button>
-                    </form>
-                </td>
+            <td>
+                <form action="/players/{{ $item->id }}/edit" method="get">
+                    <button>Modifica</button>
+                </form>
+            </td>
+            <td>
+                <form action="/players/{{ $item->id }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button>Elimina</button>
+                </form>
+            </td>
             </tr>
         @endforeach
     </table>
@@ -64,6 +68,26 @@
                 <option value="{{ $item->id }}">{{ $item->name }}</option>
             @endforeach
         </select>
+        <button>Invia</button>
+    </form>
+
+    <h3>Visualizza giocatori per team</h3>
+    <form action="/players/findByTeam" method="post">
+        @csrf
+        <span>Seleziona Team: </span>
+        <select name="team_id">
+            @foreach ($team as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
+        <button>Invia</button>
+    </form>
+
+    <h3>Visualizza giocatori con età superiore a: </h3>
+    <form action="/players/greaterThanAge" method="post">
+        @csrf
+        <span>Età: </span>
+        <input type="number" name="age" value="1">
         <button>Invia</button>
     </form>
 
