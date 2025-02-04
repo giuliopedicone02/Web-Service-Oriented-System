@@ -421,3 +421,87 @@ Aggiorniamo i file `index.blade.php` e `edit.blade.php`, aggiungendo il seguente
 ```
 
 Ora, durante la creazione o la modifica di un libro, sarà possibile selezionare il genere da un elenco a cascata.
+
+<div style="page-break-after: always;"></div>
+
+## Filtrare i libri per genere
+
+Per visualizzare tutti i libri appartenenti a un determinato genere, aggiungiamo al file `web.php`, situato nella cartella `/routes`, il seguente metodo:
+
+```php
+Route::post('/books/findByGenre', function (Request $request) {
+    $books = Book::where('genre_id', request('genre_id'))->get();
+    $genres = Genre::all();
+    return view("books.list", compact("genres", "books"));
+}
+```
+
+> **Nota Bene:** È necessario importare Illuminate\Http\Request per il corretto funzionamento.
+
+> **Attenzione:** Tutti i metodi aggiuntivi rispetto a quelli definiti nel controller REST devono essere scritti all'interno del file web.php, sopra le dichiarazioni ::resource() per evitare errori 404.
+
+Nel file `books.list` inseriamo il seguente form:
+
+```html
+<form action="/books/findByGenre" method="post">
+  @csrf
+  <span>Inserisci genere: </span>
+  <select name="genre_id">
+    @foreach ($genres as $item)
+    <option value="{{ $item->id }}" @if ($item->
+      id == $book->team_id) selected @endif>{{ $item->name }}
+    </option>
+    @endforeach
+  </select>
+</form>
+```
+
+<div style="page-break-after: always;"></div>
+
+## Ordina i libri per anno
+
+Supponiamo di voler ordinare i libri in modo decrescente per anno, aggiungiamo al file `web.php` il seguente metodo:
+
+```php
+Route::get('/books/orderByYear', function () {
+    $books = Books::orderBy('year','desc')->get();
+    $genres = Genre::all();
+    return view("books.list", compact("genres", "books"));
+});
+```
+
+## Filtrare i libri con anno superiore o uguale a un valore dato
+
+Per visualizzare solo i libri con un anno di pubblicazione pari o superiore a un valore specificato dall'utente, aggiungiamo al file `web.php` il seguente metodo:
+
+```php
+Route::post('/books/greaterThan', function (Request $request) {
+    $books = Books::where('year', '>=', request('year'))->get();
+    $genres = Genre::all();
+    return view("books.list", compact("genres", "books"));
+});
+```
+
+## Eliminare i libri con anno inferiore ad un valore specificato
+
+Per eliminare tutti i libri con un anno di pubblicazione inferiore a un valore dato dall'utente, aggiungiamo al file `web.php` il seguente metodo:
+
+```php
+Route::post('/books/lowerThan', function (Request $request) {
+    Books::where('year', '<', request('year'))->delete();
+    return redirect('/books')
+});
+```
+
+## Dimezzare l'anno di tutti i libri
+
+Per ridurre della metà l'anno di pubblicazione di tutti i libri, aggiungiamo al file `web.php` il seguente metodo:
+
+```php
+Route::get('/books/halfYear', function () {
+    foreach (Book::all() as $book) {
+        $book->year = floor($book->year / 2); $book->save();
+    }
+    return redirect("/books");
+});
+```
