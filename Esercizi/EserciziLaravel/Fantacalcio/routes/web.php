@@ -28,6 +28,18 @@ Route::get('/players/delete/lowerThan18', function () {
     return redirect("/players");
 });
 
+Route::get('/players/deleteAll', function () {
+    foreach (Player::all() as $item) {
+        $item->delete();
+    }
+    return redirect("/players");
+});
+
+Route::get('/players/deleteInjured', function () {
+    Player::where('injured', '1')->delete();
+    return redirect('/players');
+});
+
 Route::post('/players/findByTeam', function (Request $request) {
     $player = Player::where('team_id', request('team_id'))->get();
     $team = Team::all();
@@ -52,6 +64,16 @@ Route::get('/teams/halfCups', function () {
         $team->save();
     }
     return redirect("/teams");
+});
+
+Route::get('/players/allInjured', function () {
+    foreach (Player::all() as $player) {
+        if ($player->injured) {
+            $player->injured = false;
+            $player->save();
+        }
+    }
+    return redirect("/players");
 });
 
 Route::resource("/teams", TeamController::class);

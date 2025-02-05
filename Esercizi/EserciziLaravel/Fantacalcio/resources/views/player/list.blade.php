@@ -100,6 +100,15 @@
     <h3>Elimina Minorenni</h3>
     <a href="/players/delete/lowerThan18">Elimina minorenni</a>
 
+    <h3>Fai una strage</h3>
+    <a href="/players/deleteAll">Eliminali tutti</a>
+
+    <h3>Elimina gli infortunati</h3>
+    <a href="/players/deleteInjured">Eliminali</a>
+
+    <h3>Tutti rotti</h3>
+    <a href="/players/allInjured">Ammazzali tutti!</a>
+
     <h3>Vai ai team</h3>
     <a href="/teams">Visualizza i Team</a>
 </body>

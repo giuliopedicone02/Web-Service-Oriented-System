@@ -23,6 +23,7 @@
             <th>Modifica</th>
             <th>Elimina</th>
         </tr>
+
         @foreach ($team as $item)
             <tr>
                 <td>{{ $item->name }}</td>
@@ -44,6 +45,7 @@
         @endforeach
     </table>
 
+    <b>Hai inserito: </b>{{ count($team) }}
     <h3>Inserisci un nuovo team</h3>
 
     <form action="/teams" method="post">

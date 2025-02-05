@@ -433,7 +433,7 @@ Route::post('/books/findByGenre', function (Request $request) {
     $books = Book::where('genre_id', request('genre_id'))->get();
     $genres = Genre::all();
     return view("books.list", compact("genres", "books"));
-}
+});
 ```
 
 > **Nota Bene:** È necessario importare Illuminate\Http\Request per il corretto funzionamento.
@@ -448,11 +448,10 @@ Nel file `books.list` inseriamo il seguente form:
   <span>Inserisci genere: </span>
   <select name="genre_id">
     @foreach ($genres as $item)
-    <option value="{{ $item->id }}" @if ($item->
-      id == $book->team_id) selected @endif>{{ $item->name }}
-    </option>
+    <option value="{{ $item->id }}">{{ $item->name }}</option>
     @endforeach
   </select>
+  <button>Filtra</button>
 </form>
 ```
 
@@ -501,6 +500,41 @@ Per ridurre della metà l'anno di pubblicazione di tutti i libri, aggiungiamo al
 Route::get('/books/halfYear', function () {
     foreach (Book::all() as $book) {
         $book->year = floor($book->year / 2); $book->save();
+    }
+    return redirect("/books");
+});
+```
+
+## Contare il numero di elementi inseriti in una tabella
+
+La funzione `count` permette di visualizzare il numero di elementi passati dalla lista nel controller.
+
+```php
+<b>Hai inserito: </b>{{ count($books) }}
+```
+
+## Colorazione delle righe dinamica
+
+Aggiungiamo all'interno del foreach presente in `books.list`:
+
+```php
+            @if ($item->year == 2022)
+                <tr style="background-color: coral">
+                @else
+                <tr>
+            @endif
+```
+
+Questo permetterà di colorare tutte le righe che hanno libri con `year`=2022.
+
+## Eliminare tutti i record di una tabella
+
+Supponiamo di voler eliminare tutti i libri:
+
+```php
+Route::get('/books/deleteAll', function () {
+    foreach (Book::all() as $item) {
+        $item->delete();
     }
     return redirect("/books");
 });
