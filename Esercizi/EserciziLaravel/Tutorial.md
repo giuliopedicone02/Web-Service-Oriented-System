@@ -505,31 +505,35 @@ Route::get('/books/halfYear', function () {
 });
 ```
 
-## Contare il numero di elementi inseriti in una tabella
+## Contare il numero di elementi in una tabella
 
-La funzione `count` permette di visualizzare il numero di elementi passati dalla lista nel controller.
+La funzione `count()` consente di determinare il numero di elementi presenti nella lista passata dal controller. Ad esempio, per visualizzare il numero totale di libri inseriti:
 
 ```php
 <b>Hai inserito: </b>{{ count($books) }}
 ```
 
-## Colorazione delle righe dinamica
+---
 
-Aggiungiamo all'interno del foreach presente in `books.list`:
+## Colorazione dinamica delle righe
+
+Per applicare una colorazione dinamica alle righe della tabella in base all'anno di pubblicazione, aggiungiamo la seguente condizione nel ciclo `foreach` della vista `books.list`:
 
 ```php
-            @if ($item->year == 2022)
-                <tr style="background-color: coral">
-                @else
-                <tr>
-            @endif
+@if ($item->year == 2022)
+    <tr style="background-color: coral">
+@else
+    <tr>
+@endif
 ```
 
-Questo permetterà di colorare tutte le righe che hanno libri con `year`=2022.
+Questo codice evidenzierà in **corallo** tutte le righe corrispondenti a libri pubblicati nel 2022.
+
+---
 
 ## Eliminare tutti i record di una tabella
 
-Supponiamo di voler eliminare tutti i libri:
+Se vogliamo eliminare tutti i libri presenti nel database, possiamo definire una rotta che esegue l'operazione:
 
 ```php
 Route::get('/books/deleteAll', function () {
@@ -539,3 +543,5 @@ Route::get('/books/deleteAll', function () {
     return redirect("/books");
 });
 ```
+
+Questa funzione cicla su tutti i record della tabella `books`, eliminandoli uno per uno, e poi reindirizza l'utente alla lista dei libri.
