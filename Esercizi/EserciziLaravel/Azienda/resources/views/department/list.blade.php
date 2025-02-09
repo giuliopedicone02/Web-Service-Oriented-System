@@ -46,6 +46,9 @@
         <input type="text" name="name">
         <button>Invia</button>
     </form>
+
+    <h3>Vai ai lavori</h3>
+    <a href="/works">Lista dei lavori</a>
 </body>
 
 </html>
