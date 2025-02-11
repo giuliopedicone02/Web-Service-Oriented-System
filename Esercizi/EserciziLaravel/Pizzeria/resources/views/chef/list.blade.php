@@ -56,6 +56,12 @@
         <input type="number" name="level">
         <input type="submit" value="Invia">
     </form>
+
+    <h3>Elimina tutti gli chef</h3>
+    <a href="/chefs/deleteAll">Eliminali tutti</a>
+
+    <h3>Visualizza la lista dei ristoranti</h3>
+    <a href="/restaurants">Lista ristoranti</a>
 </body>
 
 </html>

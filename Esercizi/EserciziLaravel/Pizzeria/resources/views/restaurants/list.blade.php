@@ -49,7 +49,7 @@
         <span>Inserisci nome ristorante</span>
         <input type="text" name="name">
         <span>Inserisci anno di fondazione</span>
-        <input type="number" name="foundation">
+        <input type="number" name="foundation"><br><br>
         <span>Inserisci numero stelle</span>
         <input type="number" name="star">
         <span>Inserisci chef</span>
@@ -60,6 +60,24 @@
         </select>
         <input type="submit" value="Invia">
     </form>
+
+    <h3>Filtra per chef</h3>
+    <form action="/restaurants/filterByChef" method="post">
+        @csrf
+        <span>Inserisci chef</span>
+        <select name="chef_id">
+            @foreach ($chefs as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
+        <input type="submit" value="Invia">
+    </form>
+
+    <h3>Elimina tutti gli chef</h3>
+    <a href="/restaurants/deleteAll">Eliminali tutti</a>
+
+    <h3>Visualizza la lista degli chef</h3>
+    <a href="/chefs">Lista chefs</a>
 </body>
 
 </html>
