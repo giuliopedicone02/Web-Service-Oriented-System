@@ -76,6 +76,18 @@
         <button>Invia</button>
     </form>
 
+    <h3>Filtra per libro</h3>
+    <form action="/loans/filterByBook" method="post">
+        @csrf
+        <span>Seleziona libro</span>
+        <select name="book_id">
+            @foreach ($book as $item)
+                <option value="{{ $item->id }}">{{ $item->title }}</option>
+            @endforeach
+        </select>
+        <button>Cerca</button>
+    </form>
+
     <h3>Visualizza Libri</h3>
     <a href="/books">Lista dei libri</a>
 </body>
