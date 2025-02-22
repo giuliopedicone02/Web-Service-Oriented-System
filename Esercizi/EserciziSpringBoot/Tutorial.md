@@ -1,49 +1,52 @@
-
 # Spring Boot
 
 ## Passaggi Preliminari
 
 1. **Creazione del progetto:**
-    - Premi `F1`.
-    - Seleziona **Initializer Maven Project**.
-    - Configura il progetto con i seguenti parametri:
-      - **Versione**: `3.4.1`
-      - **Linguaggio**: `Java`
-      - **Group**: `edu.unict.wsos`
-      - **Artifact**: `esame`
-      - **Tipo**: `jar`
-      - **Java Version**: `17`
-    - Aggiungi le seguenti dipendenze:
-      - **Spring Web**
-      - **Thymeleaf**
-      - **MySQL Driver**
-      - **Spring Data JPA**
+
+   - Premi `F1`.
+   - Seleziona **Initializer Maven Project**.
+   - Configura il progetto con i seguenti parametri:
+     - **Versione**: `3.4.3`
+     - **Linguaggio**: `Java`
+     - **Group**: `edu.unict.wsos`
+     - **Artifact**: `esame`
+     - **Tipo**: `jar`
+     - **Java Version**: `17`
+   - Aggiungi le seguenti dipendenze:
+     - **Spring Web**
+     - **Thymeleaf**
+     - **MySQL Driver**
+     - **Spring Data JPA**
 
 2. **Salvataggio:**
-    - Salva e apri la cartella del progetto nella tua home.
+   - Salva e apri la cartella del progetto nella tua home.
 
 ---
 
 ## Configurazione del Progetto
 
 1. **Compilazione:**
-    - Esegui `maven package` nella cartella creata.
-    - Java: Clean Workspace Cache.
+
+   - Esegui `mvn spring-boot:run` nella cartella creata.
+   - Java: Clean Workspace Cache.
 
 2. **Configurazione delle proprietà di applicazione:**
-    - Apri il file `src/main/resources/application.properties` e aggiungi la seguente configurazione:
-      ```properties
-      spring.datasource.url=jdbc:mysql://localhost:3306/exam
-      spring.datasource.username=user
-      spring.datasource.password=password
-      spring.jpa.hibernate.ddl-auto=update
-      ```
+   - Apri il file `src/main/resources/application.properties` e aggiungi la seguente configurazione:
+     ```properties
+     spring.datasource.url=jdbc:mysql://localhost:3306/exam
+     spring.datasource.username=user
+     spring.datasource.password=password
+     spring.jpa.hibernate.ddl-auto=update
+     ```
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 ## Struttura del Progetto
 
-All'interno di `src/main/java/edu/unict/dmi/wsos/esami`, crea le seguenti cartelle:
+All'interno di `src/main/java/edu/unict/dmi/wsos/aeroporti`, crea le seguenti cartelle:
 
 - **Model** (step 1)
 - **Data** (step 2)
@@ -52,8 +55,9 @@ All'interno di `src/main/java/edu/unict/dmi/wsos/esami`, crea le seguenti cartel
 **Ordine di implementazione:**
 
 1. **Model**  
-   Crea una classe Java che rappresenta la tabella nel database.
+    Crea una classe Java che rappresenta la tabella nel database.
    La classe deve includere:
+
    - `@Entity`
    - I campi del database
    - L'ID deve avere `@Id` e `@GeneratedValue(strategy = GenerationType.IDENTITY)`
@@ -61,156 +65,139 @@ All'interno di `src/main/java/edu/unict/dmi/wsos/esami`, crea le seguenti cartel
    - Costruttori con tutti i parametri e costruttore vuoto tramite l'azione "Azione origine di Visual Studio Code"
 
    **Esempio**:
+
    ```java
-   package edu.unict.dmi.wsos.esami.Model;
-
-   import jakarta.persistence.Entity;
-   import jakarta.persistence.GeneratedValue;
-   import jakarta.persistence.GenerationType;
-   import jakarta.persistence.Id;
-
    @Entity
-   public class Esami {
-       @Id
-       @GeneratedValue(strategy = GenerationType.IDENTITY)
-       long id;
-       String nome;
-       String professore;
-       int cfu;
+   public class Compagnia {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    String descrizione;
+    String link;
 
-       public Esami() {
-       }
+    public Compagnia() {
+    }
 
-       public Esami(long id, String nome, String professore, int cfu) {
-           this.id = id;
-           this.nome = nome;
-           this.professore = professore;
-           this.cfu = cfu;
-       }
+    public Compagnia(Long id, String descrizione, String link) {
+        this.id = id;
+        this.descrizione = descrizione;
+        this.link = link;
+    }
 
         // Getter e Setter
         ...
    }
    ```
 
+<div style="page-break-after: always;"></div>
+
 2. **Repository**  
    Crea un'interfaccia repository che estende `JpaRepository<NomeModel, Long>`.
 
    **Esempio**:
+
    ```java
-   package edu.unict.dmi.wsos.esami.Data;
-
-   import org.springframework.data.jpa.repository.JpaRepository;
-   import edu.unict.dmi.wsos.esami.Model.Esami;
-
-   public interface EsamiRepository extends JpaRepository<Esami, Long> {
-
+   public interface CompagniaRepository extends JpaRepository<Compagnia, Long> {
    }
    ```
 
-3. **Controller**  
+3. **Controller**
    Crea una classe `Controller` con l'annotazione `@Controller`, un riferimento **private final** alla repository e un costruttore che lo inizializzi.
 
-   **Esempio**:
-   ```java
-   package edu.unict.dmi.wsos.esami.Controller;
+**Esempio**:
 
-   import org.springframework.stereotype.Controller;
-   import org.springframework.ui.Model;
-   import edu.unict.dmi.wsos.esami.Data.EsamiRepository;
-   import edu.unict.dmi.wsos.esami.Model.Esami;
+```java
+@Controller
+public class CompagniaController {
+    private final CompagniaRepository repo;
 
-   @Controller
-   public class EsamiController {
-
-       private final EsamiRepository repo;
-
-       public EsamiController(EsamiRepository repo) {
-           this.repo = repo;
-       }
-
-   }
-   ```
+    public CompagniaController(CompagniaRepository repo) {
+        this.repo = repo;
+    }
+}
+```
 
 4. **Thymeleaf: Creazione dei template**
 
-   All'interno della cartella `/src/main/resources/templates`, crea un file `index.html` tramite il comando `html:5` e modifica:
+   All'interno della cartella `/src/main/resources/templates`, crea un file `compagnie/list.html` tramite il comando `html:5` e modifica:
+
    ```html
-   <html lang="en">
+   <html lang="en"></html>
    ```
+
    in:
+
    ```html
-   <html lang="it" xmlns:th="https://www.thymeleaf.org">
+   <html lang="it" xmlns:th="https://www.thymeleaf.org"></html>
    ```
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ## Sviluppo delle funzionalità CRUD
 
 ### Read
 
-Modifica il file `index.html` creando una tabella che contenga tutti i campi del model.
-La riga relativa ai dati deve avere l'attributo `th:each="esame : ${esami}"`.
+Modifica il file `list.html` creando una tabella che contenga tutti i campi del model.
+La riga relativa ai dati deve avere l'attributo `th:each="compagnia : ${compagnie}"`.
+
 > **Nota bene**: Il campo tra parentesi graffe deve essere uguale a quello che scriviamo nel controller nel metodo `addAttribute()`. Ogni dato della tabella sarà dato dalla notazione `esame.attributo`, facendo attenzione ad usare la stessa notazione usata nel model.
 
 **Esempio**:
+
 ```html
 <!DOCTYPE html>
 <html lang="it" xmlns="https://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esami</title>
-</head>
-
-<body>
+  <body>
     <h1>
-        <center>Esami in Spring Boot</center>
+      <center>Compagnie Aeree</center>
     </h1>
 
     <table border="1px">
-        <tr>
-            <th>Nome</th>
-            <th>Professore</th>
-            <th>CFU</th>
-            <th>Modifica</th>
-            <th>Elimina</th>
-        </tr>
-        <tr th:each="esame : ${esami}">
-            <td th:text="${esame.nome}"></td>
-            <td th:text="${esame.professore}"></td>
-            <td th:text="${esame.cfu}"></td>
-            <td>
-                <form action="/update" method="post">
-                    <input type="hidden" name="id" th:value="${esame.id}">
-                    <input type="submit" value="Modifica">
-                </form>
-            </td>
-            <td>
-                <form action="/delete" method="post">
-                    <input type="hidden" name="id" th:value="${esame.id}">
-                    <input type="submit" value="Elimina">
-                </form>
-            </td>
-        </tr>
+      <tr>
+        <th>Id</th>
+        <th>Descrizione</th>
+        <th>Link</th>
+        <th>Modifica</th>
+        <th>Elimina</th>
+      </tr>
+      <tr th:each="compagnia : ${compagnie}">
+        <td th:text="${compagnia.id}"></td>
+        <td th:text="${compagnia.descrizione}"></td>
+        <td th:text="${compagnia.link}"></td>
+        <td>
+          <a th:href="@{/compagnie/{id}/edit(id=${compagnia.id})}">Modifica </a>
+        </td>
+        <td>
+          <a th:href="@{/compagnie/{id}/delete(id=${compagnia.id})}"
+            >Elimina
+          </a>
+        </td>
+      </tr>
     </table>
-</body>
 
+    <h3>Inserisci una nuova compagnia</h3>
+    <a th:href="@{/compagnie/new}">Inserisici una nuova compagnia aerea</a>
+  </body>
 </html>
 ```
 
+<div style="page-break-after: always;"></div>
+
 Modifica il `controller` aggiungendo un metodo `@GetMapping` che prende come parametro il `Model`.
 Verrà richiamato `model.addAttribute()` con i seguenti parametri:
+
 - **Nome della variabile** che usiamo nel template Thymeleaf nella notazione `${}` presente nel `th:each`.
 - `repo.findAll()` che permette di selezionare tutti i dati presenti nel database MySQL.
 
 **Esempio**:
+
 ```java
- @GetMapping("/")
- public String getEsami(Model model) {
-     model.addAttribute("esami", repo.findAll());
-     return "index";
+ @GetMapping("/compagnie")
+ public String getCompagnie(Model model) {
+     model.addAttribute("compagnie", repo.findAll());
+     return "compagnie.list";
  }
 ```
 
@@ -218,112 +205,103 @@ Verrà richiamato `model.addAttribute()` con i seguenti parametri:
 
 ### Create
 
-Modifica il file `index.html` creando un form con metodo `POST` e action `/create`.
+Creiamo il file `compagnie/edit.html` creando un form con metodo `POST`.
 Il form avrà tanti campi quanti sono i dati da inserire nella tabella del database.
+
 > **Nota bene**: L'attributo `name` di ogni tag `input` deve corrispondere esattamente con il nome delle variabili utilizzate nel model.
 
 **Esempio**:
-```html
-<h3>Inserisci un nuovo esame</h3>
 
-<form action="/create" method="post">
-    <span>Inserisci nome esame: </span>
-    <input type="text" name="nome"><br>
-    <span>Inserisci nome professore: </span>
-    <input type="text" name="professore"><br>
-    <span>Inserisci CFU: </span>
-    <input type="number" name="cfu"><br>
-    <input type="submit" value="Invia">
-</form>
+```html
+<body>
+  <h1>
+    <center>Modifica/crea Compagnia Aerea</center>
+  </h1>
+
+  <form th:action="@{/compagnie/new}" method="post" th:object="${compagnie}">
+    <input type="hidden" name="id" th:field="${compagnie.id}" />
+    <span>Inserisci descrizione</span>
+    <input type="text" name="descrizione" th:field="${compagnie.descrizione}" />
+    <span>Inserisci link</span>
+    <input type="url" name="link" th:field="${compagnie.link}" />
+    <button>Invia</button>
+  </form>
+</body>
 ```
 
-Aggiungi al `controller` un metodo `@PostMapping` che prende come parametro la classe creata allo step 1.
+Aggiungi al `controller` un metodo `@PostMapping` ed un metodo `@GetMapping`.
+Il primo prende come parametro la classe creata allo step 1. Il secondo viene richiamato dall'utente e crea un nuovo oggetto vuoto da inizializzare.
 Verrà richiamato `repo.save()` per salvare l'oggetto nel database.
 Successivamente, reindirizziamo l'utente alla home.
 
+<div style="page-break-after: always;"></div>
+
 **Esempio**:
+
 ```java
- @PostMapping("/create")
- public String creaEsame(Esami esame) {
-     repo.save(esame);
-     return "redirect:/";
- }
+ @GetMapping("/compagnie/new")
+    public String createCompagnia(Model model) {
+        model.addAttribute("compagnie", new Compagnia());
+        return "compagnia/edit";
+    }
+
+    @PostMapping("/compagnie/new")
+    public String addCompagnia(Compagnia compagnia) {
+        repo.save(compagnia);
+        return "redirect:/compagnie";
+    }
 ```
 
 ---
 
 ### Delete
 
-Aggiungi al `controller` un metodo `@PostMapping` che prende come parametro l'id dell'oggetto da eliminare (passato come `hidden` nel form della tabella).
+Aggiungi al `controller` un metodo `@GetMapping` che prende come parametro l'id dell'oggetto da eliminare (passato come `hidden` nel form della tabella).
 Verrà richiamato `repo.deleteById()` per eliminare l'oggetto dal database.
 Successivamente, reindirizziamo l'utente alla home.
 
+> Nota Bene: L'utilizzo di @PathVariable è fondamentale
+
 **Esempio**:
+
 ```java
- @PostMapping("/delete")
- public String deleteEsame(Long id) {
-     repo.deleteById(id);
-     return "redirect:/";
- }
+@GetMapping("/compagnie/{id}/delete")
+    public String deleteCompagnia(@PathVariable Long id) {
+        repo.deleteById(id);
+        return "redirect:/compagnie";
+    }
 ```
 
 ---
 
 ### Update
 
-Crea un file `modifica.html` nella stessa directory di `index.html`. Questo file conterrà un form simile a quello utilizzato per l'invio, ma con alcune accortezze per precompilare i dati da modificare.
+Modifica il `controller` aggiungendo un metodo `@GetMapping` che prende come parametri:
 
-- Il form avrà `method=post`, `action=/create` e `th:object=${esame}`.
-- Ogni campo avrà un attributo `th:value={esame.parametro}`, dove `esame` è il nome della variabile passata nel controller.
-
-**Esempio di form**:
-```html
-<!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifica Esame</title>
-</head>
-
-<body>
-    <h3>Modifica esame</h3>
-
-    <form action="/create" method="post" th:object="${esame}">
-        <input type="hidden" name="id" th:value="${esame.id}">
-        <span>Modifica nome esame: </span>
-        <input type="text" name="nome" th:value="${esame.nome}"><br>
-        <span>Modifica nome professore: </span>
-        <input type="text" name="professore" th:value="${esame.professore}"><br>
-        <span>Modifica CFU: </span>
-        <input type="number" name="cfu" th:value="${esame.cfu}"><br>
-        <input type="submit" value="Modifica">
-    </form>
-</body>
-
-</html>
-```
-
-Modifica il `controller` aggiungendo un metodo `@PostMapping` che prende come parametri:
 - Il **Model**
-- L'**ID** dell'oggetto da modificare (passato come `hidden` nel form della tabella di `index.html`).
+- L'**ID** dell'oggetto da modificare (passato tramite url).
+
 Il compito del metodo sarà:
 
 Richiamare `model.addAttribute()` passando la variabile per Thymeleaf (assicurati che il nome sia coerente tra controller e template) ed utilizzando `repo.getReferenceById()` per ottenere i dati dal database e precompilare il form.
 
+<div style="page-break-after: always;"></div>
+
 **Esempio**:
+
 ```java
- @PostMapping("/update")
- public String updateEsame(Model model, Long id) {
-     model.addAttribute("esame", repo.getReferenceById(id));
-     return "modifica";
- }
+@GetMapping("/compagnie/{id}/edit")
+    public String editCompagnia(@PathVariable Long id, Model model) {
+        model.addAttribute("compagnie", repo.getReferenceById(id));
+        return "compagnia/edit";
+    }
 ```
 
+<!--
 ### Filtri
 
 Creiamo un filtro che tramite i model:
+
 - Abbigliamento
 - Brand
 
@@ -354,6 +332,7 @@ Ecco il codice sistemato e ottimizzato per maggiore chiarezza e leggibilità:
 ### Filtri
 
 Creiamo un filtro che, tramite i model:
+
 - **Abbigliamento**
 - **Brand**
 
@@ -390,9 +369,10 @@ Nel controller di **Abbigliamento**, aggiungiamo un metodo che utilizza il metod
 
 ### Gestione dell'eliminazione a cascata
 
-Supponiamo di avere i seguenti modelli:  
-- **Studenti**  
-- **Esami**  
+Supponiamo di avere i seguenti modelli:
+
+- **Studenti**
+- **Esami**
 
 Se tentassimo di eliminare un esame sostenuto da uno o più studenti, ciò causerebbe un errore dovuto alla violazione delle dipendenze. Per risolvere questo problema, possiamo utilizzare l'annotazione `@OneToMany()` nella classe `Esami` per gestire l'eliminazione a cascata e la rimozione degli orfani:
 
@@ -427,6 +407,7 @@ public String getExams(Model model) {
     return "exam/list";
 }
 ```
+
 In questo esempio, la somma dei CFU viene calcolata iterando sulla lista degli esami, e il risultato viene aggiunto al modello per essere mostrato nella vista.
 
 Ecco una versione migliorata del testo:
@@ -466,14 +447,19 @@ In questo modo, tutte le materie con meno di 6 CFU saranno aggiornate automatica
 Per modificare dinamicamente il colore delle righe di una tabella in base a una condizione, possiamo utilizzare Thymeleaf. Ad esempio, per evidenziare in rosso le righe relative a uno specifico esame (ad esempio, "WSOS"), possiamo scrivere:
 
 ```html
-<tr th:if="${student.examId.name == 'WSOS'}" 
-    style="background-color: red; color: white;" 
-    th:each="student : ${students}">
-    ...
+<tr
+  th:if="${student.examId.name == 'WSOS'}"
+  style="background-color: red; color: white;"
+  th:each="student : ${students}"
+>
+  ...
 </tr>
 
-<tr th:unless="${student.examId.name == 'WSOS'}" 
-    th:each="student : ${students}">
-    ...
+<tr
+  th:unless="${student.examId.name == 'WSOS'}"
+  th:each="student : ${students}"
+>
+  ...
 </tr>
 ```
+ -->

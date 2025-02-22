@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compagnia Aerea</title>
+</head>
+
+<body>
+    <h1>
+        <center>Compagnia Aerea</center>
+    </h1>
+
+    <h3>Lista delle compagnie aeree</h3>
+
+    <table border="1px">
+        <tr>
+            <th>Id</th>
+            <th>Descrizione</th>
+            <th>Link</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="compagnia : ${compagnie}">
+            <td th:text="${compagnia.id}"></td>
+            <td th:text="${compagnia.descrizione}"></td>
+            <td th:text="${compagnia.link}"></td>
+            <td> <a th:href="@{/compagnie/{id}/edit(id=${compagnia.id})}">Modifica </a></td>
+            <td> <a th:href="@{/compagnie/{id}/delete(id=${compagnia.id})}">Elimina </a></td>
+        </tr>
+    </table>
+
+    <h3>Inserisci una nuova compagnia</h3>
+    <a th:href="@{/compagnie/new}">Inserisici una nuova compagnia aerea</a>
+</body>
+
+</html>

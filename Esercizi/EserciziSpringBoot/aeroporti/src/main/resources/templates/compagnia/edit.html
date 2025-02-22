@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica/Crea Compagnia Aerea</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica/crea Compagnia Aerea</center>
+    </h1>
+
+    <form th:action="@{/compagnie/new}" method="post" th:object="${compagnie}">
+        <input type="hidden" name="id" th:field="${compagnie.id}">
+        <span>Inserisci descrizione</span>
+        <input type="text" name="descrizione" th:field="${compagnie.descrizione}">
+        <span>Inserisci link</span>
+        <input type="url" name="link" th:field="${compagnie.link}">
+        <button>Invia</button>
+    </form>
+</body>
+
+</html>
