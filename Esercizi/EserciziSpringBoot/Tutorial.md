@@ -297,6 +297,120 @@ Richiamare `model.addAttribute()` passando la variabile per Thymeleaf (assicurat
     }
 ```
 
+## Relazioni tra più tabelle
+
+Introduciamo ora una nuova entità `Tratte`, che rappresenta una tratta aerea e che sarà associata a una `Compagnia Aerea` tramite una chiave esterna. Per ogni tratta vogliamo memorizzare le seguenti informazioni:
+
+- **Aeroporto di Origine**
+- **Aeroporto di Destinazione**
+- **Distanza** (valore intero)
+- **Compagnia** (chiave esterna che fa riferimento alla tabella `Compagnia`)
+
+Procediamo quindi con la creazione del **model** e del **controller**, seguendo la struttura vista in precedenza.
+
+### Associazione tra Tratta e Compagnia
+
+Nel modello `Tratta`, utilizziamo l'annotazione `@ManyToOne` per definire la relazione tra le due entità:
+
+```java
+@Entity
+public class Tratta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String origine;
+    private String destinazione;
+    private Integer distanza;
+
+    @ManyToOne
+    @JoinColumn(name = "compagnia_id")
+    private Compagnia compagnia;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+Successivamente, aggiorniamo il modello `Compagnia` per abilitare **l'eliminazione a cascata**, aggiungendo l'annotazione `@OneToMany`:
+
+```java
+@Entity
+public class Compagnia {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String descrizione;
+    private String link;
+
+    @OneToMany(mappedBy = "compagnia", cascade = CascadeType.REMOVE)
+    private List<Tratta> tratte = new ArrayList<>();
+}
+```
+
+---
+
+## Visualizzazione dei dati collegati
+
+Per mostrare le informazioni della compagnia associata a una tratta, modifichiamo il file `list.html` della vista `Tratte`, aggiungendo il seguente codice:
+
+```html
+<td th:text="${tratta.compagnia.descrizione}"></td>
+```
+
+Questo ci consente di accedere all'oggetto `Compagnia` collegato e visualizzarne il campo `descrizione`.
+
+---
+
+<div style="page-break-after: always;"></div>
+
+## Selezione della compagnia nella creazione e modifica di una tratta
+
+Per consentire la selezione di una compagnia aerea durante la creazione o modifica di una tratta, aggiungiamo al file `edit.html` il seguente elemento `<select>`:
+
+```html
+<span>Seleziona compagnia aerea</span>
+<select name="compagniaId">
+  <option
+    th:each="compagnia : ${compagnie}"
+    th:value="${compagnia.id}"
+    th:text="${compagnia.descrizione}"
+  ></option>
+</select>
+```
+
+Affinché l'elenco delle compagnie venga popolato correttamente, aggiorniamo il controller `TrattaController` in modo che passi i dati necessari alla vista:
+
+```java
+@Controller
+public class TrattaController {
+    private final TrattaRepository trattaRepository;
+    private final CompagniaRepository compagniaRepository;
+
+    public TrattaController(TrattaRepository trattaRepository, CompagniaRepository compagniaRepository) {
+        this.trattaRepository = trattaRepository;
+        this.compagniaRepository = compagniaRepository;
+    }
+
+    ...
+
+    ...
+
+    ...
+
+    @GetMapping("/tratte/{id}/edit")
+    public String editTratta(@PathVariable Long id, Model model) {
+        model.addAttribute("tratta", trattaRepository.getReferenceById(id));
+        model.addAttribute("compagnie", compagniaRepository.findAll());
+        return "tratta/edit";
+    }
+}
+```
+
+Ora, quando si accede alla pagina di modifica di una tratta, il sistema caricherà automaticamente l'elenco delle compagnie disponibili, permettendo di selezionare quella desiderata.
+
+---
+
 <!--
 ### Filtri
 

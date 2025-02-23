@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica/Crea Tratta</title>
+</head>
+
+<body>
+    <h1>
+        <center>Modifica/crea Tratta</center>
+    </h1>
+
+    <form th:action="@{/tratte/new}" method="post" th:object="${tratte}">
+        <input type="hidden" name="id" th:field="${tratte.id}">
+        <span>Inserisci origine</span>
+        <input type="text" name="origine" th:field="${tratte.origine}">
+        <span>Inserisci destinazione</span>
+        <input type="text" name="destinazione" th:field="${tratte.destinazione}">
+        <span>Inserisci distanza</span>
+        <input type="number" name="distanza" th:field="${tratte.distanza}">
+        <span>Seleziona compagnia aerea</span>
+        <select name="compagniaId">
+            <option th:each="compagnia : ${compagnie}" th:value="${compagnia.id}" th:text="${compagnia.descrizione}">
+            </option>
+        </select>
+        <button>Invia</button>
+    </form>
+</body>
+
+</html>

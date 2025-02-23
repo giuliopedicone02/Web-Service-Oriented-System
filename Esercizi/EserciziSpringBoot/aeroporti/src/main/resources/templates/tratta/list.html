@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compagnia Aerea</title>
+</head>
+
+<body>
+    <h1>
+        <center>Tratta</center>
+    </h1>
+
+    <h3>Lista delle tratte</h3>
+
+    <table border="1px">
+        <tr>
+            <th>Id</th>
+            <th>Origine</th>
+            <th>Destinazione</th>
+            <th>Distanza</th>
+            <th>Compagnia Aerea</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+        </tr>
+        <tr th:each="tratta : ${tratte}">
+            <td th:text="${tratta.id}"></td>
+            <td th:text="${tratta.origine}"></td>
+            <td th:text="${tratta.destinazione}"></td>
+            <td th:text="${tratta.distanza}"></td>
+            <td th:text="${tratta.compagniaId.descrizione}"></td>
+            <td> <a th:href="@{/tratte/{id}/edit(id=${tratta.id})}">Modifica </a></td>
+            <td> <a th:href="@{/tratte/{id}/delete(id=${tratta.id})}">Elimina </a></td>
+        </tr>
+    </table>
+
+    <h3>Inserisci una nuova tratta</h3>
+    <a th:href="@{/tratte/new}">Inserisici una nuova tratta</a>
+
+    <h3>Visualizza Compagnie Aeree</h3>
+    <a th:href="@{/compagnie}">Vai alle compagnie aeree</a>
+</body>
+
+</html>
