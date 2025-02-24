@@ -35,6 +35,21 @@
         </tr>
     </table>
 
+    <br><br>
+
+    <b>Numero di tratte inserite: </b>
+    <span th:text="${#lists.size(tratte)}"> </span>
+
+    <h3>Filtra per destinazione</h3>
+    <form action="/tratte/findByDestinazione" method="post">
+        <span>Seleziona destinazione:</span>
+        <select name="destinazione">
+            <option th:each="tratta : ${tratte}" th:value="${tratta.destinazione}" th:text="${tratta.destinazione}">
+            </option>
+        </select>
+        <button>Cerca</button>
+    </form>
+
     <h3>Inserisci una nuova tratta</h3>
     <a th:href="@{/tratte/new}">Inserisici una nuova tratta</a>
 

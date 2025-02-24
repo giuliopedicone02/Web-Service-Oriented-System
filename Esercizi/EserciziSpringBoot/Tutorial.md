@@ -142,7 +142,7 @@ public class CompagniaController {
 Modifica il file `list.html` creando una tabella che contenga tutti i campi del model.
 La riga relativa ai dati deve avere l'attributo `th:each="compagnia : ${compagnie}"`.
 
-> **Nota bene**: Il campo tra parentesi graffe deve essere uguale a quello che scriviamo nel controller nel metodo `addAttribute()`. Ogni dato della tabella sarà dato dalla notazione `esame.attributo`, facendo attenzione ad usare la stessa notazione usata nel model.
+> **Nota bene**: Il campo tra parentesi graffe deve essere uguale a quello che scriviamo nel controller nel metodo `addAttribute()`. Ogni dato della tabella sarà dato dalla notazione `compagnia.attributo`, facendo attenzione ad usare la stessa notazione usata nel model.
 
 **Esempio**:
 
@@ -355,7 +355,7 @@ public class Compagnia {
 Per mostrare le informazioni della compagnia associata a una tratta, modifichiamo il file `list.html` della vista `Tratte`, aggiungendo il seguente codice:
 
 ```html
-<td th:text="${tratta.compagnia.descrizione}"></td>
+<td th:text="${tratta.compagniaId.descrizione}"></td>
 ```
 
 Questo ci consente di accedere all'oggetto `Compagnia` collegato e visualizzarne il campo `descrizione`.
@@ -408,6 +408,107 @@ public class TrattaController {
 ```
 
 Ora, quando si accede alla pagina di modifica di una tratta, il sistema caricherà automaticamente l'elenco delle compagnie disponibili, permettendo di selezionare quella desiderata.
+
+---
+
+<div style="page-break-after: always;"></div>
+
+## Filtrare per Compagnia Aerea
+
+Ora vogliamo filtrare tutte le tratte operate da una specifica compagnia aerea. Per farlo, aggiungiamo un link "Filtra" accanto a ciascuna compagnia, che permetta di visualizzare esclusivamente le tratte di quella compagnia.
+
+### Modifiche a `list.html` di `Compagnia`
+
+Aggiungiamo il seguente codice per creare il link di filtro:
+
+```html
+<td>
+  <a th:href="@{/compagnie/{id}/filterByCompagnia(id=${compagnia.id})}"
+    >Filtra</a
+  >
+</td>
+```
+
+### Modifiche a `TrattaRepository`
+
+Aggiungiamo un metodo per recuperare le tratte associate a una specifica compagnia aerea:
+
+```java
+List<Tratta> findByCompagniaId(Compagnia compagniaId);
+```
+
+### Modifiche a `TrattaController`
+
+Aggiungiamo un metodo per gestire il filtro delle tratte per compagnia:
+
+```java
+@GetMapping("/compagnie/{id}/filterByCompagnia")
+public String filterByCompagnia(@PathVariable Long id, Model model) {
+    Compagnia c = compagnia.getReferenceById(id);
+    model.addAttribute("tratte", tratta.findByCompagniaId(c));
+    model.addAttribute("compagnie", compagnia.findAll());
+    return "tratta/list";
+}
+```
+
+---
+
+## Conteggio delle Tratte Inserite
+
+Per visualizzare il numero totale di tratte presenti nel sistema, modifichiamo il file `list.html` di `Tratte`, aggiungendo il seguente codice:
+
+```html
+<b>Numero di tratte inserite: </b>
+<span th:text="${#lists.size(tratte)}"></span>
+```
+
+---
+
+<div style="page-break-after: always;"></div>
+
+## Filtrare le Tratte per Destinazione
+
+Ora vogliamo permettere la ricerca delle tratte in base alla destinazione.
+
+### Modifiche a `list.html` di `Tratte`
+
+Aggiungiamo un modulo di selezione per filtrare le tratte per destinazione:
+
+```html
+<h3>Filtra per destinazione</h3>
+<form action="/tratte/findByDestinazione" method="post">
+  <label for="destinazione">Seleziona destinazione:</label>
+  <select id="destinazione" name="destinazione">
+    <option
+      th:each="tratta : ${tratte}"
+      th:value="${tratta.destinazione}"
+      th:text="${tratta.destinazione}"
+    ></option>
+  </select>
+  <button type="submit">Cerca</button>
+</form>
+```
+
+### Modifiche a `TrattaRepository`
+
+Aggiungiamo un metodo per recuperare le tratte in base alla destinazione:
+
+```java
+List<Tratta> findByDestinazione(String destinazione);
+```
+
+### Modifiche a `TrattaController`
+
+Aggiungiamo un metodo per gestire la ricerca delle tratte per destinazione:
+
+```java
+@PostMapping("/tratte/findByDestinazione")
+public String findByDestinazione(String destinazione, Model model) {
+    model.addAttribute("tratte", tratta.findByDestinazione(destinazione));
+    model.addAttribute("compagnie", compagnia.findAll());
+    return "tratta/list";
+}
+```
 
 ---
 

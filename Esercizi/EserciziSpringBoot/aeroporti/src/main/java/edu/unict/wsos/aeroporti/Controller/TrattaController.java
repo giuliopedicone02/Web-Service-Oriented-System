@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import edu.unict.wsos.aeroporti.Model.Compagnia;
 import edu.unict.wsos.aeroporti.Model.Tratta;
 import edu.unict.wsos.aeroporti.Repository.CompagniaRepository;
 import edu.unict.wsos.aeroporti.Repository.TrattaRepository;
@@ -51,6 +52,21 @@ public class TrattaController {
         model.addAttribute("tratte", tratta.getReferenceById(id));
         model.addAttribute("compagnie", compagnia.findAll());
         return "tratta/edit";
+    }
+
+    @GetMapping("/compagnie/{id}/filterByCompagnia")
+    public String filterByCompagnia(@PathVariable Long id, Model model) {
+        Compagnia c = compagnia.getReferenceById(id);
+        model.addAttribute("tratte", tratta.findByCompagniaId(c));
+        model.addAttribute("compagnie", compagnia.findAll());
+        return "tratta/list";
+    }
+
+    @PostMapping("/tratte/findByDestinazione")
+    public String findByDestinazione(String destinazione, Model model) {
+        model.addAttribute("tratte", tratta.findByDestinazione(destinazione));
+        model.addAttribute("compagnie", compagnia.findAll());
+        return "tratta/list";
     }
 
 }

@@ -21,6 +21,7 @@
             <th>Link</th>
             <th>Modifica</th>
             <th>Elimina</th>
+            <th>Filtra</th>
         </tr>
         <tr th:each="compagnia : ${compagnie}">
             <td th:text="${compagnia.id}"></td>
@@ -28,6 +29,7 @@
             <td th:text="${compagnia.link}"></td>
             <td> <a th:href="@{/compagnie/{id}/edit(id=${compagnia.id})}">Modifica </a></td>
             <td> <a th:href="@{/compagnie/{id}/delete(id=${compagnia.id})}">Elimina </a></td>
+            <td> <a th:href="@{/compagnie/{id}/filterByCompagnia(id=${compagnia.id})}">Filtra</a></td>
         </tr>
     </table>
 
